@@ -218,6 +218,7 @@ insertSkipList(list, I)
             }
         else
             x = x->next[k]
+            k++
 ```
 
 La funzione ``randomLevel()`` determina il numero di puntatori da includere nel nuovo nodo e deve essere realizzata conformemente al seguente algoritmo. Spiegare il vantaggio di questo algoritmo nella relazione da consegnare con l'esercizio:
