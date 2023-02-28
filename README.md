@@ -311,9 +311,35 @@ Implementare gli unit-test degli algoritmi secondo le indicazioni suggerite nel 
 
 # Esercizio 4
 
-Si implementi una libreria che realizza la struttura dati Grafo in modo che sia ottimale per dati sparsi (IMPORTANTE: le scelte implementative che farete dovranno essere giustificate in relazione alle nozioni presentate durante le lezioni in aula). La struttura deve consentire di rappresentare sia grafi diretti che grafi non diretti (suggerimento: un grafo non diretto può essere rappresentato usando un'implementazione per grafi diretti nel seguente modo: per ogni arco `(a,b)`, etichettato `w`, presente nel grafo, è presente nel grafo anche l'arco `(b,a)`, etichettato `w`. Ovviamente, il grafo dovrà mantenere l'informazione che specifica se esso è un grafo diretto o non diretto.).
+Si implementi una libreria che realizza la struttura dati Grafo in modo che sia ottimale per dati sparsi
+(IMPORTANTE: le scelte implementative che farete dovranno essere giustificate in relazione alle nozioni presentate
+durante le lezioni in aula). La struttura deve consentire di rappresentare sia grafi diretti che grafi non diretti
+(suggerimento:  un grafo non diretto può essere rappresentato usando un'implementazione per grafi diretti modificata
+per garantire che, per ogni arco (a,b), etichettato w, presente nel grafo, sia presente nel grafo anche l'arco (b,a),
+etichettato w. Ovviamente, il grafo dovrà mantenere l'informazione che specifica se esso è un grafo diretto o non diretto.).
+L'implementazione deve essere generica sia per quanto riguarda il tipo dei nodi, sia per quanto riguarda le etichette
+degli archi.
+La struttura dati implementata dovrà offrire (almeno) le seguenti operazioni (accanto a ogni operazione è specificata la
+complessità richiesta; n può indicare il numero di nodi o il numero di archi, a seconda del contesto):
 
-Oltre alle funzioni essenziali per la struttura dati Grafo, si implementi nella libreria anche una funzione che restituisce il peso del grafo (se il grafo non è pesato, la funzione può terminare con un errore).
+- Creazione di un grafo vuoto – O(1)
+- Aggiunta di un nodo – O(1)
+- Aggiunta di un arco – O(1)
+- Verifica se il grafo è diretto – O(1)
+- Verifica se il grafo contiene un dato nodo – O(1)
+- Verifica se il grafo contiene un dato arco – O(1)  (*)
+- Cancellazione di un nodo – O(n)
+- Cancellazione di un arco – O(1)  (*)
+- Determinazione del numero di nodi – O(1)
+- Determinazione del numero di archi – O(n)
+- Recupero dei nodi del grafo – O(n)
+- Recupero degli archi del grafo – O(n)
+- Recupero nodi adiacenti di un dato nodo – O(1)  (*)
+- Recupero etichetta associata a una coppia di nodi – O(1) (*)
+- Determinazione del peso del grafo (se il grafo non è pesato, il metodo può terminare con un errore)– O(n) 
+
+(*) quando il grafo è veramente sparso, assumendo che l'operazione venga effettuata su un nodo la cui lista di adiacenza ha una lunghezza in O(1).
+
 
 ## Unit Testing
 
