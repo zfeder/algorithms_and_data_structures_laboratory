@@ -72,7 +72,7 @@ Come indicato sotto, alcuni esercizi chiedono di implementare codice generico. S
 
 Nota: chi è in grado di realizzare tipi di dato astratto tramite tipi opachi è incoraggiato a procedere in questa direzione.
 
-**Suggerimenti (Java)**: Sebbene in Java la soluzione più in linea con il moderno utilizzo del linguaggio richiederebbe la creazione di classi parametriche, tutte le scelte implementative (compresa la decisione di usare o meno classi parametriche) sono lasciate agli studenti. Inoltre, è possibile (e consigliato) usare gli ArrayList invece degli array nativi al fine di semplificare la realizzazione di codice generico.
+**Suggerimenti (Java)**: La realizzazione di codice generico in Java deve basarsi sull’uso delle classi parametriche e dei cosiddetti “tipi generici”. Inoltre, è possibile (e consigliato) usare gli ArrayList invece degli array nativi al fine di semplificare la realizzazione di codice generico.
 
 ## Uso di librerie esterne e/o native del linguaggio scelto
 
@@ -291,7 +291,7 @@ Si sperimenti il funzionamento dell'applicazione considerando diversi valori per
 -- ``main_ex2`` deve ricevere come parametri il path del dizionario da usare come riferimento e il file da correggere, necessariamente in quest'ordine. Il risultato va stampato a schermo, con le parole ordinate come nel file da correggere. Per esempio:
 
 ```
-$ ./main_ex2 /tmp/data/dictionary.txt /tmp/data/correctme.txt 
+$ ./main_ex2 /tmp/data/dictionary.txt /tmp/data/correctme.txt
 cinqve
 perpeteva
 squola
