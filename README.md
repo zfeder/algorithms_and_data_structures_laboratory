@@ -336,7 +336,7 @@ complessità richiesta; n può indicare il numero di nodi o il numero di archi, 
 - Recupero degli archi del grafo – O(n)
 - Recupero nodi adiacenti di un dato nodo – O(1)  (*)
 - Recupero etichetta associata a una coppia di nodi – O(1) (*)
-- Determinazione del peso del grafo (se il grafo non è pesato, il metodo può terminare con un errore)– O(n) 
+- Determinazione del peso del grafo (se il grafo non è pesato, il metodo può terminare con un errore)– O(n)
 
 (*) quando il grafo è veramente sparso, assumendo che l'operazione venga effettuata su un nodo la cui lista di adiacenza ha una lunghezza in O(1).
 
@@ -357,9 +357,11 @@ La struttura dati e l'algoritmo di Prim dovranno essere utilizzati con i dati co
 
 Il file `italian_dist_graph.csv` che potete recuperare seguendo il path
 
-    /usr/NFS/Linux/labalgoritmi/datasets/
+```
+https://datacloud.di.unito.it/index.php/s/PirTJpq4JMnpH3G
+```
 
-(in laboratorio von Neumann, selezionare il disco Y) contiene le distanze in metri tra varie località italiane e una frazione delle località a loro più vicine. Il formato è un CSV standard: i campi sono separati da virgole; i record sono separati dal carattere di fine riga (`\n`).
+Tale file contiene le distanze in metri tra varie località italiane e una frazione delle località a loro più vicine. Il formato è un CSV standard: i campi sono separati da virgole; i record sono separati dal carattere di fine riga (`\n`).
 
 Ogni record contiene i seguenti dati:
 
