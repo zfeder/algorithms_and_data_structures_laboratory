@@ -19,7 +19,7 @@
 
 **Q: Sono uno studente assegnato al turno X posso spostarmi al turno Y?**
 
-**A**: sì, a patto che trovi un collega del turno Y che accetta di frequentare il turno X. Il cambiamento va comunicato ai docenti **entro e non oltre il 31 marzo 2022**. Dopo tale data, non sarà più possibile alcuno spostamento di turno.
+**A**: sì, a patto che trovi un collega del turno Y che accetta di frequentare il turno X. Il cambiamento va comunicato ai docenti **entro e non oltre il 31 marzo 2023**. Dopo tale data, non sarà più possibile alcuno spostamento di turno.
 
 **Q: Sono uno studente che ha già preparato il laboratorio dell'anno accademico 2020/2021. Posso sostenere la prova di laboratorio discutendo gli esercizi dello scorso a.a.?**
 
