@@ -7,15 +7,15 @@
   1. secondo il corso di assegnazione:
       - i turni 1 e 2 sono destinati agli studenti che frequentano il corso A
       - i turni 3 e 4 sono destinati agli studenti che frequentano il corso B
-  2. secondo la parità della seconda cifra meno significativa della matricola dello studente:
+  2. secondo la parità della cifra meno significativa della matricola dello studente:
       - se la cifra è pari frequentare turni pari
       - se la cifra è dispari frequentare turni dispari
 
   Riassumendo:
-- studenti del corso A con la seconda cifra meno significativa della matricola dispari saranno assegnati al turno 1
-- studenti del corso A con la seconda cifra meno significativa della matricola pari saranno assegnati al turno 2
-- studenti del corso B con la seconda cifra meno significativa della matricola dispari saranno assegnati al turno 3
-- studenti del corso B con la seconda cifra meno significativa della matricola pari saranno assegnati al turno 4
+- studenti del corso A con la cifra meno significativa della matricola dispari saranno assegnati al turno 1
+- studenti del corso A con la cifra meno significativa della matricola pari saranno assegnati al turno 2
+- studenti del corso B con la cifra meno significativa della matricola dispari saranno assegnati al turno 3
+- studenti del corso B con la cifra meno significativa della matricola pari saranno assegnati al turno 4
 
 **Q: Sono uno studente assegnato al turno X posso spostarmi al turno Y?**
 
