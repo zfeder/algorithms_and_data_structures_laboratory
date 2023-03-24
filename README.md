@@ -185,9 +185,9 @@ Si misurino i tempi di risposta variando il valore di `k`, per ciascuno dei tre 
 
 ### Condizioni per la consegna:
 
-- Creare una sottocartella chiamata ``ex1`` all'interno del repository.
-- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di ``ex1/build`` un file eseguibile chiamato ``main_ex1``.
-- L'eseguibile ``main_ex1`` deve ricevere come parametri il percorso del file CSV contenente i record da ordinare, il percorso del file in cui salvare i record ordinati, il valore di ``k`` e il valore del campo da utilizzare per l'ordinamento. Per esempio:
+- Creare una sottocartella chiamata `ex1` all'interno del repository.
+- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di `ex1/build` un file eseguibile chiamato `main_ex1`.
+- L'eseguibile `main_ex1` deve ricevere come parametri il percorso del file CSV contenente i record da ordinare, il percorso del file in cui salvare i record ordinati, il valore di `k` e il valore del campo `field` da utilizzare per l'ordinamento. Per esempio:
 
 ```
 $ ./main_ex1 /tmp/data/records.csv /tmp/data/sorted.csv 27 1
@@ -293,7 +293,7 @@ insertSkipList(list, item)
             k++
 ```
 
-La funzione ``randomLevel()`` nel codice precedente determina il numero di puntatori da includere nel nuovo nodo e deve essere realizzata conformemente al seguente algoritmo. Spiegare il vantaggio di questo algoritmo nella relazione da consegnare con l'esercizio:
+La funzione `randomLevel()` nel codice precedente determina il numero di puntatori da includere nel nuovo nodo e deve essere realizzata conformemente al seguente algoritmo. Spiegare il vantaggio di questo algoritmo nella relazione da consegnare con l'esercizio:
 
 ```
 randomLevel()
@@ -353,15 +353,15 @@ void find_errors(const char *dictfile, const char *textfile, size_t max_height);
 - `max_height` è il parametro della *SkipList*;
 - la funzione deve stampare a schermo le parole del testo non presenti nel dizionario, nell'ordine con cui appaiono nel testo da correggere.
 
-Si sperimenti il funzionamento dell'applicazione considerando diversi valori per il parametro ``max_height``, riportando in una breve relazione (circa una pagina) i risultati degli esperimenti.
+Si sperimenti il funzionamento dell'applicazione considerando diversi valori per il parametro `max_height`, riportando in una breve relazione (circa una pagina) i risultati degli esperimenti.
 
 **Si ricorda che i file `dictionary.txt` e `correctme.txt` NON DEVONO ESSERE OGGETTO DI COMMIT SU GIT!**
 
 ### Condizioni per la consegna:
 
-- Creare una sottocartella chiamata ``ex2`` all'interno del repository.
-- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di ``ex2/build`` un file eseguibile chiamato ``main_ex2``.
-- ``main_ex2`` deve ricevere come parametri il percorso del dizionario da usare come riferimento e il file da correggere, in quest'ordine. Il risultato va stampato a schermo, con le parole ordinate come nel file da correggere. Per esempio:
+- Creare una sottocartella chiamata `ex2` all'interno del repository.
+- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di `ex2/build` un file eseguibile chiamato `main_ex2`.
+- `main_ex2` deve ricevere come parametri il percorso del dizionario da usare come riferimento e il file da correggere, in quest'ordine. Il risultato va stampato a schermo, con le parole ordinate come nel file da correggere. Per esempio:
 
 ```
 $ ./main_ex2 /tmp/data/dictionary.txt /tmp/data/correctme.txt
@@ -402,7 +402,7 @@ Implementare gli unit-test degli algoritmi secondo le indicazioni suggerite nel 
 
 ### Condizioni per la consegna:
 
-- Creare una sottocartella chiamata ``ex3-4`` all'interno del repository, che conterrà tutte le classi relative a questo esercizio e al seguente, compresi i file di progetto relativi all'IDE Java che avete utilizzato.
+- Creare una sottocartella chiamata `ex3-4` all'interno del repository, che conterrà tutte le classi relative a questo esercizio e al seguente, compresi i file di progetto relativi all'IDE Java che avete utilizzato.
 
 ## Esercizio 4 - Grafi sparsi e foreste ricoprenti minime
 
@@ -484,4 +484,4 @@ Ogni record contiene i seguenti dati:
 
 ### Condizioni per la consegna:
 
-- Creare una sottocartella chiamata ``ex3-4`` all'interno del repository, che conterrà tutte le classi relative a questo esercizio e al precedente, compresi i file di progetto relativi all'IDE Java che avete utilizzato.
+- Creare una sottocartella chiamata `ex3-4` all'interno del repository, che conterrà tutte le classi relative a questo esercizio e al precedente, compresi i file di progetto relativi all'IDE Java che avete utilizzato.
