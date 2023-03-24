@@ -334,7 +334,7 @@ Implementare gli unit-test per tutte le operazioni della *SkipList* secondo le i
 
 All'indirizzo:
 
-> [https://datacloud.di.unito.it/index.php/s/taii8aA8rNnXgCN](https://datacloud.di.unito.it/index.php/s/taii8aA8rNnXgCN)
+> [https://datacloud.di.unito.it/index.php/s/gfoEndRSfwQKiHS](https://datacloud.di.unito.it/index.php/s/gfoEndRSfwQKiHS)
 
 potete trovare un dizionario (`dictionary.txt`) e un file da correggere (`correctme.txt`).
 
