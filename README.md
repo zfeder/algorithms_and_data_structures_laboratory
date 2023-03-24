@@ -187,10 +187,10 @@ Si misurino i tempi di risposta variando il valore di `k`, per ciascuno dei tre 
 
 - Creare una sottocartella chiamata ``ex1`` all'interno del repository.
 - La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di ``ex1/build`` un file eseguibile chiamato ``main_ex1``.
-- ``main_ex1`` deve ricevere come parametri il percorso del file CSV contenente i record da ordinare e del file in cui salvare i record ordinati. Per esempio:
+- L'eseguibile ``main_ex1`` deve ricevere come parametri il percorso del file CSV contenente i record da ordinare, il percorso del file in cui salvare i record ordinati, il valore di ``k`` e il valore del campo da utilizzare per l'ordinamento. Per esempio:
 
 ```
-$ ./main_ex1 /tmp/data/records.csv /tmp/data/sorted.csv
+$ ./main_ex1 /tmp/data/records.csv /tmp/data/sorted.csv 27 1
 ```
 
 ## Esercizio 2 - SkipList
