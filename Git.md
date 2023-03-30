@@ -84,7 +84,7 @@ accedere tramite browser aprendo l'URL:
 Una volta effettuato il login, è possibile utilizzare l'interfaccia web per
 creare una copia personale del repository su cui lavorerete. Un membro per ogni
 gruppo acceda all'url:
-  [https://gitlab2.educ.di.unito.it/drago/laboratorio-algoritmi-2021-2022](https://gitlab2.educ.di.unito.it/drago/laboratorio-algoritmi-2021-2022)
+  [https://gitlab2.educ.di.unito.it/pozzato/laboratorio-algoritmi-2022-2023](https://gitlab2.educ.di.unito.it/pozzato/laboratorio-algoritmi-2022-2023)
 e clicchi sull'icona "Fork repository".
 
 Di default, l'interfaccia web proporrà di impostare i permessi del repository
@@ -96,7 +96,7 @@ perché qualcuno ne ha copiato il contenuto.
 Aggiungete ora i membri del gruppo *e i docenti di laboratorio* al gruppo di
 sviluppo del progetto con ruolo "developer" (trovate l'opzione seguendo i menù
 Settings -> Members a partire dalla pagina del vostro repository). I nickname
-dei docenti di laboratorio sono "pozzato", "magro", "drago" e "micalizi".
+dei docenti di laboratorio sono "pozzato", "magro", "audrito" e "micalizi".
 
 L'avere a disposizione una copia del laboratorio non è ancora sufficiente per
 poter iniziare a lavorare: è infatti necessario creare una copia locale alla
@@ -119,12 +119,12 @@ repository proposto dai docenti: (nel vostro caso dovrete
 sostituire l'URL con quello che vi siete annotati precedentemente):
 
 ```
- git clone https://magro@gitlab2.educ.di.unito.it/drago/laboratorio-algoritmi-2021-2022
+ git clone https://pozzato@gitlab2.educ.di.unito.it/pozzato/laboratorio-algoritmi-2022-2023 
 ```
 
 ## Comandi di base per lavorare
 
-Git vi permetterà di salvare il vostro lavoro e manterrà la storia delle  varie
+Git gvi permetterà di salvare il vostro lavoro e manterrà la storia delle  varie
 versioni che avrete creato insieme all'indicazione di chi ha effettuato ogni
 aggiornamento. Segue un elenco dei comandi principali che dovrete utilizzare:
 
