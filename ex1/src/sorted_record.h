@@ -28,6 +28,14 @@ void merge_binary_insertion_sort(void *base, size_t nitems, size_t size, size_t 
  */
 int binary_search(void *a, void *item, int min, int max, size_t size, int (*compar)(const void *, const void *));
 
+/**
+ * @brief Accesso ai dati puntati da *base
+ * 
+ * @param base 
+ * @param nitems 
+ * @param size 
+ * @param compar 
+ */
 void insertion_sort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *));
 
 void merge_sort(void *base, int left, int mid, int right, size_t size, int (*compar)(const void *, const void *));
@@ -36,3 +44,5 @@ void merge_sort(void *base, int left, int mid, int right, size_t size, int (*com
 
 
 #endif
+
+
