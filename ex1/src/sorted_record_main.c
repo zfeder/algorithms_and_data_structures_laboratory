@@ -115,29 +115,6 @@ int main(int argc, char const *argv[]) {
     param_field = convert_param_field;
     sort_records(input_file_name, output_file_name, param_k, param_field);
     printf("Esecuzione avvenuta con successo\n");
-
-    /*
-    char *input_file_name = (char *)argv[1];
-    FILE *input_file = open_file(input_file_name, "r");
-    printf("Reading file...\n");
-
-    int rows = 0;
-    Record *records = read_file_input(input_file, &rows);
-    fclose(input_file);
-
-    // Algoritmo di ordinamento 
-    printf("Sort file...\n");
-    insertion_sort((void*) records, rows, sizeof(Record), compar_value_int);
-
-
-
-    printf("Write file...\n");
-    char *output_file_name = (char *)argv[2];
-    FILE *output_file = open_file(output_file_name, "w");
-    write_output_file(output_file, records, rows);
-    fclose(output_file);
-    */
-    
     
     return EXIT_SUCCESS;
 
