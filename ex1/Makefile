@@ -11,5 +11,7 @@ sorted_record: src/sorted_record.c
 sorted_record_main: src/sorted_record_main.c
 			$(CC) $(CFLAGS) -c src/sorted_record_main.c build/sorted_record.o -o build/main_ex1.o
 
+sorted_record_test:
+
 
 
