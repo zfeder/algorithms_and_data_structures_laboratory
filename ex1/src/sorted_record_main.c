@@ -24,7 +24,7 @@ typedef struct _Record {
  * @param mode Modalità di apertura r, w
  * @return FILE* Puntatore al file
  */
-FILE *open_file_input(char *file_name, char *mode);
+FILE *open_file(const char *file_name, char *mode);
 
 /**
  * @brief Legge in input un file CSV e ritorna un puntatore
@@ -43,7 +43,7 @@ Record *read_file_input(FILE *input_file, int *rows);
  * @param value2 Secondo valore da confrontare
  * @return int 
  */
-int compar_value_char(void *value1, void *value2);
+int compar_value_char(const void *value1, const void *value2);
 
 /**
  * @brief Confronta il campo int di due record
@@ -52,7 +52,7 @@ int compar_value_char(void *value1, void *value2);
  * @param value2 Secondo valore da confrontare
  * @return int 
  */
-int compar_value_int(void *value1, void *value2);
+int compar_value_int(const void *value1, const void *value2);
 
 /**
  * @brief Confronta il campo float di due record
@@ -61,7 +61,7 @@ int compar_value_int(void *value1, void *value2);
  * @param value2 Secondo valore da confrontare
  * @return int 
  */
-int compar_value_float(void *value1, void *value2);
+int compar_value_float(const void *value1, const void *value2);
 
 /**
  * @brief Controlla se l'utente ha inserito il 
@@ -84,30 +84,92 @@ int check_args(int argc, char const *argv[]);
  */
 void sort_records(const char *infile, const char *outfile, size_t k, size_t field);
 
+/**
+ * @brief Scrive i records nel file
+ * 
+ * @param output_file File su cui scrivere
+ * @param records Array di records da scrivere
+ * @param rows Numero di righe nel file
+ */
+int *write_output_file(FILE *output_file, Record *records, int rows);
 
 int main(int argc, char const *argv[]) {
-    if(argc < 0) {
-       return EXIT(EXIT_FAILURE);
+    if (check_args(argc, argv) == 0) {
+        return EXIT_FAILURE;
     }
+
+    const char *input_file_name = (char *)argv[1];
+    const char *output_file_name = (char *)argv[2];
+    int param_k;
+    char *p_k;
+    /* 
+        argv[] è un puntatore a stringhe esecuzione della conversione da stringa a intero
+        con utilizzo della funzione strtol
+    */
+    long convert_param_k = strtol(argv[3], &p_k, 10);
+    param_k = convert_param_k;
+
+    int param_field;
+    char *p_field;
+    long convert_param_field = strtol(argv[4], &p_field, 10);
+    param_field = convert_param_field;
+    sort_records(input_file_name, output_file_name, param_k, param_field);
+    printf("Esecuzione avvenuta con successo\n");
+
+    /*
     char *input_file_name = (char *)argv[1];
-    FILE *input_file = open_file_input(input_file_name, "r");
+    FILE *input_file = open_file(input_file_name, "r");
     printf("Reading file...\n");
 
     int rows = 0;
     Record *records = read_file_input(input_file, &rows);
     fclose(input_file);
 
-    /* Algoritmo di ordinamento */
+    // Algoritmo di ordinamento 
+    printf("Sort file...\n");
+    insertion_sort((void*) records, rows, sizeof(Record), compar_value_int);
+
+
 
     printf("Write file...\n");
+    char *output_file_name = (char *)argv[2];
+    FILE *output_file = open_file(output_file_name, "w");
+    write_output_file(output_file, records, rows);
+    fclose(output_file);
+    */
+    
+    
+    return EXIT_SUCCESS;
 
 }
 
 void sort_records(const char *infile, const char *outfile, size_t k, size_t field) {
+    FILE *input_file = open_file(infile, "r");
+    printf("Reading file...\n");
 
-}
+    int rows = 0;
+    Record *records = read_file_input(input_file, &rows);
+    fclose(input_file);
 
-FILE *open_file_input(char *file_name, char *mode) {
+    // Algoritmo di ordinamento 
+    printf("Sort file...\n");
+    if(field == 1){
+        insertion_sort((void*) records, rows, sizeof(Record), compar_value_char);
+    } else if(field == 2) {
+        insertion_sort((void*) records, rows, sizeof(Record), compar_value_int);
+    } else if (field == 3) {
+        insertion_sort((void*) records, rows, sizeof(Record), compar_value_float);
+    }
+
+
+
+    printf("Write file...\n");
+    FILE *output_file = open_file(outfile, "w");
+    write_output_file(output_file, records, rows);
+    fclose(output_file);
+ }
+
+FILE *open_file(const char *file_name, char *mode) {
     FILE *file = fopen(file_name, mode);
     if(file == NULL) {
         printf("File non esiste\n");
@@ -133,7 +195,7 @@ Record *read_file_input(FILE *input_file, int *rows) {
         records[*rows].value_int = atoi(split);
 
         split = strtok(NULL, ",");
-        records[*rows].value_float = strtod(split, NULL);
+        records[*rows].value_float = strtof(split, NULL);
         *rows += 1;
     }
     free(buffer);
@@ -141,7 +203,28 @@ Record *read_file_input(FILE *input_file, int *rows) {
     return records;
 }
 
-int compar_value_char(void *value1, void *value2) {
+int *write_output_file(FILE *output_file, Record *records, int rows) {
+    for (int i = 0; i < rows; i++) {
+        fprintf(output_file, "%d,%s,%d,%lf\n", records[i].id,
+            records[i].value_char, records[i].value_int,
+            records[i].value_float);
+  }
+  return 0;
+
+}
+
+int check_args(int argc, char const *argv[]) {
+  if (strcmp(argv[1], "--help") == 0) {
+    printf(
+        "Usage: main_ex1 [input_file] [output_file] [k] [field] "
+        "[type]\n\n");
+    return 0;
+  }
+  return 1;
+}
+
+
+int compar_value_char(const void *value1, const void *value2) {
     int res;
     res = strcmp(((Record *)value1)->value_char, ((Record *)value2)->value_char);
     if(res != 0) {
@@ -150,7 +233,7 @@ int compar_value_char(void *value1, void *value2) {
     return ((Record *)value1)->id - ((Record *)value2)->id;
 }
 
-int compar_value_int(void *value1, void *value2) {
+int compar_value_int(const void *value1, const void *value2) {
     if(((Record *)value1)->value_int < ((Record *)value2)->value_int)
         return -1;
     else if(((Record *)value1)->value_int > ((Record *)value2)->value_int)
@@ -159,7 +242,7 @@ int compar_value_int(void *value1, void *value2) {
         return 0;
 }
 
-int compar_value_float(void *value1, void *value2) {
+int compar_value_float(const void *value1, const void *value2) {
     if(((Record *)value1)->value_float < ((Record *)value2)->value_float)
         return -1;
     else if(((Record *)value1)->value_float > ((Record *)value2)->value_float)
