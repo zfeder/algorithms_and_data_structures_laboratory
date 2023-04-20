@@ -93,6 +93,7 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
  */
 int *write_output_file(FILE *output_file, Record *records, int rows);
 
+
 int main(int argc, char const *argv[]) {
     if (check_args(argc, argv) == 0) {
         return EXIT_FAILURE;
@@ -114,36 +115,49 @@ int main(int argc, char const *argv[]) {
     long convert_param_field = strtol(argv[4], &p_field, 10);
     param_field = convert_param_field;
     sort_records(input_file_name, output_file_name, param_k, param_field);
-    printf("Esecuzione avvenuta con successo\n");
+    printf("\nEsecuzione avvenuta con successo\n");
     
     return EXIT_SUCCESS;
 
 }
 
 void sort_records(const char *infile, const char *outfile, size_t k, size_t field) {
+    //Lettura del file in input
+    printf("\nReading file...\n");
+    clock_t time_start_read_file = clock();
     FILE *input_file = open_file(infile, "r");
-    printf("Reading file...\n");
-
     int rows = 0;
     Record *records = read_file_input(input_file, &rows);
     fclose(input_file);
+    clock_t time_end_read_file = clock();
+    printf("Read file end. Time lapsed: %fs\n", (double)(time_end_read_file - time_start_read_file) / CLOCKS_PER_SEC);
 
-    // Algoritmo di ordinamento 
-    printf("Sort file...\n");
+    //Algoritmo di ordinamento 
+    printf("\nSort file...\n");
+    clock_t time_start = clock();
     if(field == 1){
-        insertion_sort((void*) records, rows, sizeof(Record), compar_value_char);
+        //insertion_sort((void*) records, rows, sizeof(Record), compar_value_char);
+        //merge_sort((void*) records, 0, rows - 1, sizeof(Record), compar_value_char);
+        merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_char);
     } else if(field == 2) {
-        insertion_sort((void*) records, rows, sizeof(Record), compar_value_int);
+        //insertion_sort((void*) records, rows, sizeof(Record), compar_value_int);
+        //merge_sort((void*) records, 0, rows - 1, sizeof(Record), compar_value_int);
+        merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_int);
     } else if (field == 3) {
-        insertion_sort((void*) records, rows, sizeof(Record), compar_value_float);
+        //merge_sort((void*) records, 0, rows - 1, sizeof(Record), compar_value_float);
+        merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_float);
     }
+    clock_t time_end = clock();
+    printf("Sorting end. Time lapsed: %fs\n", (double)(time_end - time_start) / CLOCKS_PER_SEC);
 
-
-
-    printf("Write file...\n");
+    // Scrittura del file in output
+    printf("\nWrite file...\n");
+    clock_t time_start_write_file = clock();
     FILE *output_file = open_file(outfile, "w");
     write_output_file(output_file, records, rows);
     fclose(output_file);
+    clock_t time_end_write_file = clock();
+    printf("Write file end. Time lapsed: %fs\n", (double)(time_end_write_file - time_start_write_file) / CLOCKS_PER_SEC);
  }
 
 FILE *open_file(const char *file_name, char *mode) {
@@ -154,6 +168,7 @@ FILE *open_file(const char *file_name, char *mode) {
     }
     return file;
 }
+
 
 Record *read_file_input(FILE *input_file, int *rows) {
     char *buffer = malloc(ROW_LENGHT);
@@ -176,7 +191,6 @@ Record *read_file_input(FILE *input_file, int *rows) {
         *rows += 1;
     }
     free(buffer);
-
     return records;
 }
 
