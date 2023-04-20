@@ -74,6 +74,14 @@ int compar_value_float(const void *value1, const void *value2);
 int check_args(int argc, char const *argv[]);
 
 /**
+ * @brief Libera la memoria allocata per l'array records
+ * 
+ * @param records Array records
+ * @param rows Numero di righe di records all'interno del file 
+ */
+void free_memory(Record *records, int rows);
+
+/**
  * @brief Ordina gli elementi contenuti nel file CSV 
  *        secondo un criterio 
  * 
@@ -158,6 +166,9 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     fclose(output_file);
     clock_t time_end_write_file = clock();
     printf("Write file end. Time lapsed: %fs\n", (double)(time_end_write_file - time_start_write_file) / CLOCKS_PER_SEC);
+
+    printf("Free memory...\n");
+    free_memory(records, rows);
  }
 
 FILE *open_file(const char *file_name, char *mode) {
@@ -214,6 +225,12 @@ int check_args(int argc, char const *argv[]) {
   return 1;
 }
 
+void free_memory(Record *records, int rows) {
+    for(int i = 0; i < rows; i++) {
+        free(records[i].value_char);
+    }
+    free(records);
+}
 
 int compar_value_char(const void *value1, const void *value2) {
     int res;
