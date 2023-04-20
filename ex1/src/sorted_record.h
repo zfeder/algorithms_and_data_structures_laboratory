@@ -38,7 +38,11 @@ int binary_search(void *a, void *item, int min, int max, size_t size, int (*comp
  */
 void insertion_sort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *));
 
-void merge_sort(void *base, int left, int mid, int right, size_t size, int (*compar)(const void *, const void *));
+void merge(void *base, int left, int mid, int right, size_t size, int (*compar)(const void *, const void *));
+
+void merge_sort(void* base, int left, size_t nitems, size_t size, size_t k ,int (*compar)(const void *, const void *));
+
+
 
 
 
