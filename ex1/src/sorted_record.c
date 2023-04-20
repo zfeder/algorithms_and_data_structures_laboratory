@@ -4,13 +4,21 @@
 #include "sorted_record.h"
 
 
+
+
 void merge_binary_insertion_sort(void *base, size_t nitems, size_t size, size_t k, int (*compar)(const void *, const void *)) {
     // in vase al parametro in input k si decide secondo quale algoritmo ordinare il vettore
-    /*if(nitems <= k) {
+    //printf("Valore nitems: %zu\n", nitems);
+    //printf("Valore size: %zu\n", size);
+    //printf("Valore k: %zu\n", k);
+    if(nitems <= k) {
+        printf("Insertion Sort\n");
         insertion_sort(base, nitems, size, compar);
-    }*/
+    } else {
+        printf("Merge Sort\n");
+        merge_sort(base, 0, nitems, size, k, compar);
+    }
 }
-
 
 int binary_search(void *a, void *item, int low, int high, size_t size, int (*compar)(const void *, const void *)) {
     if (high <= low)
@@ -26,7 +34,8 @@ int binary_search(void *a, void *item, int low, int high, size_t size, int (*com
 
 void insertion_sort(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *)) {
     void *selected = malloc(size);
-    for(int i = 1; i < nitems; i++) {
+    int i;
+    for(i = 1; i < nitems; i++) {
         int j = i - 1;
         memcpy(selected, base + i * size, size);
         int index = binary_search(base, selected, 0, j, size, compar);
@@ -39,50 +48,70 @@ void insertion_sort(void *base, size_t nitems, size_t size, int (*compar)(const 
     free(selected);
 }
 
-void merge_sort(void *base, int left, int mid, int right, size_t size, int (*compar)(const void *, const void *)) {
+void merge(void *base, int left, int mid, int right, size_t size, int (*compar)(const void *, const void *)) {
     int len1 = mid - left + 1;
     int len2 = right - mid;
+    // Creazione di array temporanei 
+    // Definire una malloc per allocare i due vettori
+    void *left_array = malloc(len1 * size);
+    void *right_array = malloc(len2 * size);
 
-    char leftArr[len1 * size];
-    char rightArr[len2 * size];
-    char *arr = (char *)base;
-
+    //Copia dei dati in array temporanei 
     for(int i = 0; i < len1; i++){
-        memcpy(leftArr + i * size, arr + (left + i) * size, size);
-    }   
-    for(int i = 0; i < len2; i++){
-        memcpy(rightArr + i * size, arr + (mid + 1 + i) * size, size);
+        memcpy(left_array + i * size, base + (left + i) * size, size);
     }   
     
+    for(int i = 0; i < len2; i++){
+        memcpy(right_array + i * size, base + (mid + 1 + i) * size, size);
+    }
+         
+    //Unione degli array temporanei
     int i, j, k;
     i = 0;
     j = 0;
     k = left;
 
     while(i < len1 && j < len2){
-        if(compar(leftArr + i * size, rightArr + j * size) <= 0){
-            memcpy(arr + k * size, leftArr + i * size, size);
+        if(compar(left_array + i * size, right_array + j * size) <= 0){
+            memcpy(base + k * size, left_array + i * size, size);
             i++;
         }else{
-            memcpy(arr + k * size, rightArr + j * size, size);
+            memcpy(base + k * size, right_array + j * size, size);
             j++;
         }
         k++;
     }
-
     while (i < len1) {
-        memcpy(arr + k * size, leftArr + i * size, size);
+        memcpy(base + k * size, left_array + i * size, size);
         i++;
         k++;
     }
-
     while (j < len2) {
-        memcpy(arr + k * size, rightArr + j * size, size);
+        memcpy(base + k * size, right_array + j * size, size);
         j++;
         k++;
     }
-
+    free(left_array);
+    free(right_array);
 }
+
+
+void merge_sort(void* base, int left, size_t nitems, size_t size, size_t k, int (*compar)(const void *, const void *)) {
+        int mid = left + (nitems - left)/2;
+        if(nitems <= k) {
+            insertion_sort(base, nitems, size, compar);
+        } 
+        if(left < nitems) {
+            merge_sort(base, left, mid, size, k, compar);
+            merge_sort(base, mid + 1, nitems, size, k, compar);
+            merge(base, left, mid, nitems, size, compar);
+        }
+              
+}
+
+
+
+
 
 
 
