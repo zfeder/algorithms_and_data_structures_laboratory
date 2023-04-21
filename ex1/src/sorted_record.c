@@ -3,20 +3,12 @@
 #include <string.h>
 #include "sorted_record.h"
 
-
-
-
 void merge_binary_insertion_sort(void *base, size_t nitems, size_t size, size_t k, int (*compar)(const void *, const void *)) {
     // in vase al parametro in input k si decide secondo quale algoritmo ordinare il vettore
-    //printf("Valore nitems: %zu\n", nitems);
-    //printf("Valore size: %zu\n", size);
-    //printf("Valore k: %zu\n", k);
     if(nitems <= k) {
-        printf("Insertion Sort\n");
         insertion_sort(base, nitems, size, compar);
     } else {
-        printf("Merge Sort\n");
-        merge_sort(base, 0, nitems, size, k, compar);
+        merge_sort_insertion(base, 0, nitems, size, k, compar);
     }
 }
 
@@ -95,19 +87,28 @@ void merge(void *base, int left, int mid, int right, size_t size, int (*compar)(
     free(right_array);
 }
 
+void merge_sort(void* base, int left, size_t nitems, size_t size, int (*compar)(const void *, const void *)) {
+     if(left < nitems) {
+        int mid = left + (nitems - left)/2;
+        merge_sort(base, left, mid, size, compar);
+        merge_sort(base, mid + 1, nitems, size, compar);
+        merge(base, left, mid, nitems, size, compar);
+    } 
+}
 
-void merge_sort(void* base, int left, size_t nitems, size_t size, size_t k, int (*compar)(const void *, const void *)) {
+void merge_sort_insertion(void* base, int left, size_t nitems, size_t size, size_t k, int (*compar)(const void *, const void *)) {
         int mid = left + (nitems - left)/2;
         if(nitems <= k) {
             insertion_sort(base, nitems, size, compar);
         } 
         if(left < nitems) {
-            merge_sort(base, left, mid, size, k, compar);
-            merge_sort(base, mid + 1, nitems, size, k, compar);
+            merge_sort_insertion(base, left, mid, size, k, compar);
+            merge_sort_insertion(base, mid + 1, nitems, size, k, compar);
             merge(base, left, mid, nitems, size, compar);
-        }
-              
+        }         
 }
+
+
 
 
 
