@@ -144,15 +144,10 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     printf("\nSort file...\n");
     clock_t time_start = clock();
     if(field == 1){
-        //insertion_sort((void*) records, rows, sizeof(Record), compar_value_char);
-        //merge_sort((void*) records, 0, rows - 1, sizeof(Record), compar_value_char);
         merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_char);
     } else if(field == 2) {
-        //insertion_sort((void*) records, rows, sizeof(Record), compar_value_int);
-        //merge_sort((void*) records, 0, rows - 1, sizeof(Record), compar_value_int);
         merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_int);
     } else if (field == 3) {
-        //merge_sort((void*) records, 0, rows - 1, sizeof(Record), compar_value_float);
         merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_float);
     }
     clock_t time_end = clock();
