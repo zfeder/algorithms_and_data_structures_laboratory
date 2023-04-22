@@ -1,9 +1,9 @@
 CC = gcc
-CFLAGS = -g 
+CFLAGS =  
 INCLUDES = src/*.h
 COMMON_DEPS = $(INCLUDES) Makefile
 
-all: sorted_record sorted_record_main
+all: sorted_record sorted_record_main sorted_record_test
 tester: sorted_record sorted_record_test 
 	
 sorted_record: src/sorted_record.c
@@ -14,19 +14,13 @@ sorted_record_main: src/sorted_record_main.c
 
 sorted_record_test: src/sorted_record_test.c 
 			$(CC) $(CFLAGS) src/sorted_record.c src/sorted_record_test.c src/unity.c -o build/main_ex1_test
-
+			
 test:
 	make tester
-	bin/main_ex1_test
-
-run:
-	make all
-	build/main_ex1
+	build/main_ex1_test
 
 clear:
-		rm build/*.o
-		rm build/main_ex1
-		rm build/main_ex1_test
+		rm -f build/* bin/*
 
 
 
