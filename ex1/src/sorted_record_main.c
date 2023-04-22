@@ -141,7 +141,7 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     printf("Read file end. Time lapsed: %fs\n", (double)(time_end_read_file - time_start_read_file) / CLOCKS_PER_SEC);
 
     //Algoritmo di ordinamento 
-    printf("\nSort file...\n");
+    printf("\nSorting file...\n");
     clock_t time_start = clock();
     if(field == 1){
         merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_char);
@@ -154,7 +154,7 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     printf("Sorting end. Time lapsed: %fs\n", (double)(time_end - time_start) / CLOCKS_PER_SEC);
 
     // Scrittura del file in output
-    printf("\nWrite file...\n");
+    printf("\nWriting file...\n");
     clock_t time_start_write_file = clock();
     FILE *output_file = open_file(outfile, "w");
     write_output_file(output_file, records, rows);
@@ -162,7 +162,6 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     clock_t time_end_write_file = clock();
     printf("Write file end. Time lapsed: %fs\n", (double)(time_end_write_file - time_start_write_file) / CLOCKS_PER_SEC);
 
-    printf("Free memory...\n");
     free_memory(records, rows);
  }
 
