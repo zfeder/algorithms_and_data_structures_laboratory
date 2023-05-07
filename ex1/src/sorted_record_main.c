@@ -144,11 +144,11 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     printf("\nSorting file...\n");
     clock_t time_start = clock();
     if(field == 1){
-        merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_char);
+        merge_binary_insertion_sort((void *) records, rows, sizeof(Record), k, compar_value_char);
     } else if(field == 2) {
-        merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_int);
+        merge_binary_insertion_sort((void *) records, rows, sizeof(Record), k, compar_value_int);
     } else if (field == 3) {
-        merge_binary_insertion_sort((void *) records, rows - 1, sizeof(Record), k, compar_value_float);
+        merge_binary_insertion_sort((void *) records, rows, sizeof(Record), k, compar_value_float);
     }
     clock_t time_end = clock();
     printf("Sorting end. Time lapsed: %fs\n", (double)(time_end - time_start) / CLOCKS_PER_SEC);
@@ -227,12 +227,7 @@ void free_memory(Record *records, int rows) {
 }
 
 int compar_value_char(const void *value1, const void *value2) {
-    int res;
-    res = strcmp(((Record *)value1)->value_char, ((Record *)value2)->value_char);
-    if(res != 0) {
-        return res;
-    }
-    return ((Record *)value1)->id - ((Record *)value2)->id;
+    return strcmp(((Record *)value1)->value_char, ((Record *)value2)->value_char);
 }
 
 int compar_value_int(const void *value1, const void *value2) {
