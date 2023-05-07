@@ -42,40 +42,24 @@ void insertion_sort(void *base, size_t nitems, size_t size, int (*compar)(const 
  * @brief 
  * 
  * @param base 
- * @param left 
- * @param mid 
- * @param right 
- * @param size 
- * @param compar 
- */
-void merge(void *base, int left, int mid, int right, size_t size, int (*compar)(const void *, const void *));
-
-/**
- * @brief 
- * 
- * @param base 
- * @param left 
  * @param nitems 
  * @param size 
  * @param compar 
  */
-void merge_sort(void* base, int left, size_t nitems, size_t size, int (*compar)(const void *, const void *));
+void merge(void *base, size_t nitems, size_t size, int (*compar)(const void *, const void *));
 
 /**
  * @brief 
  * 
  * @param base 
- * @param left 
  * @param nitems 
  * @param size 
  * @param k 
  * @param compar 
  */
-void merge_sort_insertion(void* base, int left, size_t nitems, size_t size, size_t k ,int (*compar)(const void *, const void *));
-
+void merge_sort(void* base, size_t nitems, size_t size, size_t k ,int (*compar)(const void *, const void *));
 
 
 
 #endif
-
 
