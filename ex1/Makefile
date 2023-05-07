@@ -1,7 +1,11 @@
 CC = gcc
-CFLAGS =  
+CFLAGS =  -Wall 
 INCLUDES = src/*.h
 COMMON_DEPS = $(INCLUDES) Makefile
+infile = ./records.csv
+outfile = ./sort_record_int.csv
+k = 32
+field = 2
 
 all: sorted_record sorted_record_main sorted_record_test
 tester: sorted_record sorted_record_test 
@@ -19,8 +23,11 @@ test:
 	make tester
 	build/main_ex1_test
 
+run:
+	./build/main_ex1 $(infile) $(outfile) $(k) $(field)
+
 clear:
-		rm -f build/* bin/*
+		rm ./build/*
 
 
 
