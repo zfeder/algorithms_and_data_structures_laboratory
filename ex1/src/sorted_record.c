@@ -75,8 +75,6 @@ void merge(void *base, size_t nitems, size_t size, int (*compar)(const void *, c
     free(selected);
 }
 
-
-
 void merge_sort(void* base, size_t nitems, size_t size, size_t k, int (*compar)(const void *, const void *)) {
     if(nitems <= k) {
         insertion_sort(base, nitems, size, compar);
@@ -88,14 +86,3 @@ void merge_sort(void* base, size_t nitems, size_t size, size_t k, int (*compar)(
         merge(base, nitems, size, compar);
     }
 } 
-
-
-
-
-
-
-
-
-
-
-
