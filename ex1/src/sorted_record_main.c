@@ -168,7 +168,7 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
 FILE *open_file(const char *file_name, char *mode) {
     FILE *file = fopen(file_name, mode);
     if(file == NULL) {
-        printf("File non esiste\n");
+        printf("Errore nell'apertura del file\n");
         exit(EXIT_FAILURE);
     }
     return file;
