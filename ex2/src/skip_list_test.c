@@ -64,6 +64,13 @@ static void test_search_skip_list_not_found(void) {
   clear_skiplist(&list);
 }
 
+static void test_search_skip_list_not_found_two(void) {
+  new_skiplist(&list, 10, string_compar_test);
+  insert_skiplist(list, (void *)&i1);
+  TEST_ASSERT_NULL(search_skiplist(list, (void *)&i2));
+  clear_skiplist(&list);
+}
+
 int main(int argc, char const *argv[]) {
     UNITY_BEGIN();
 
@@ -72,6 +79,7 @@ int main(int argc, char const *argv[]) {
     RUN_TEST(test_search_value_int);
     RUN_TEST(test_search_value_char);
     RUN_TEST(test_search_skip_list_not_found);
+    RUN_TEST(test_search_skip_list_not_found_two);
 
     return UNITY_END();
 }
