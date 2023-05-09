@@ -2,9 +2,6 @@
 #ifndef _SKIP_LIST_H
 #define _SKIP_LIST_H
 
-//#define MAX_HEIGHT 10
-
-
 struct SkipList;
 struct Node;
 
