@@ -8,7 +8,7 @@
 
 
 /**
- * @brief Elementi usati da ordinare
+ * @brief Elementi da ordinare
  */
 typedef struct _Record {
     int id;
@@ -20,27 +20,26 @@ typedef struct _Record {
 /**
  * @brief Apre un file e ritorna un puntatore ad esso
  * 
- * @param file_name Nome del file da aprire
- * @param mode Modalità di apertura r, w
+ * @param file_name nome del file da aprire
+ * @param mode modalità di apertura r, w
  * @return FILE* Puntatore al file
  */
 FILE *open_file(const char *file_name, char *mode);
 
 /**
- * @brief Legge in input un file CSV e ritorna un puntatore
- *        a un array di strutture Record
+ * @brief Legge in input un file CSV e ritorna un puntatore a un array di strutture Record
  * 
- * @param input_file File da leggere in input
- * @param rows Numero di righe del file
- * @return Record* Array di record
+ * @param input_file file da leggere in input
+ * @param rows numero di righe del file
+ * @return Record* array di record
  */
 Record *read_file_input(FILE *input_file, int *rows);
 
 /**
  * @brief Confronta il campo char di due record
  * 
- * @param value1 Primo valore da confrontare
- * @param value2 Secondo valore da confrontare
+ * @param value1 primo valore da confrontare
+ * @param value2 secondo valore da confrontare
  * @return int 
  */
 int compar_value_char(const void *value1, const void *value2);
@@ -48,8 +47,8 @@ int compar_value_char(const void *value1, const void *value2);
 /**
  * @brief Confronta il campo int di due record
  * 
- * @param value1 Primo valore da confrontare
- * @param value2 Secondo valore da confrontare
+ * @param value1 primo valore da confrontare
+ * @param value2 secondo valore da confrontare
  * @return int 
  */
 int compar_value_int(const void *value1, const void *value2);
@@ -57,18 +56,17 @@ int compar_value_int(const void *value1, const void *value2);
 /**
  * @brief Confronta il campo float di due record
  * 
- * @param value1 Primo valore da confrontare
- * @param value2 Secondo valore da confrontare
+ * @param value1 primo valore da confrontare
+ * @param value2 secondo valore da confrontare
  * @return int 
  */
 int compar_value_float(const void *value1, const void *value2);
 
 /**
- * @brief Controlla se l'utente ha inserito il 
- *        numero corretto di argomenti
+ * @brief Controlla se l'utente ha inserito il numero corretto di argomenti
  * 
- * @param argc Numero di argomenti passati al programma
- * @param argv Argomenti
+ * @param argc numero di argomenti passati al programma
+ * @param argv argomenti
  * @return int 0 argomenti non corretti, 1 OK
  */
 int check_args(int argc, char const *argv[]);
@@ -76,28 +74,27 @@ int check_args(int argc, char const *argv[]);
 /**
  * @brief Libera la memoria allocata per l'array records
  * 
- * @param records Array records
- * @param rows Numero di righe di records all'interno del file 
+ * @param records array records
+ * @param rows numero di righe di records all'interno del file 
  */
 void free_memory(Record *records, int rows);
 
 /**
- * @brief Ordina gli elementi contenuti nel file CSV 
- *        secondo un criterio 
+ * @brief Ordina gli elementi contenuti nel file CSV secondo un criterio 
  * 
- * @param infile Percorso del file CSV
- * @param outfile Percorso nel quale salvare i record ordinati
- * @param k Paramentro dell'algoritmo
- * @param field Secondo quale dei 3 campi ordinare i record
+ * @param infile percorso del file CSV
+ * @param outfile percorso nel quale salvare i record ordinati
+ * @param k paramentro dell'algoritmo
+ * @param field secondo quale dei 3 campi ordinare i record
  */
 void sort_records(const char *infile, const char *outfile, size_t k, size_t field);
 
 /**
  * @brief Scrive i records nel file
  * 
- * @param output_file File su cui scrivere
- * @param records Array di records da scrivere
- * @param rows Numero di righe nel file
+ * @param output_file file su cui scrivere
+ * @param records array di records da scrivere
+ * @param rows numero di righe nel file
  */
 int *write_output_file(FILE *output_file, Record *records, int rows);
 
@@ -111,10 +108,7 @@ int main(int argc, char const *argv[]) {
     const char *output_file_name = (char *)argv[2];
     int param_k;
     char *p_k;
-    /* 
-        argv[] è un puntatore a stringhe esecuzione della conversione da stringa a intero
-        con utilizzo della funzione strtol
-    */
+    // argv[] è un puntatore a stringhe esecuzione della conversione da stringa a intero con utilizzo della funzione strtol
     long convert_param_k = strtol(argv[3], &p_k, 10);
     param_k = convert_param_k;
 
@@ -122,6 +116,7 @@ int main(int argc, char const *argv[]) {
     char *p_field;
     long convert_param_field = strtol(argv[4], &p_field, 10);
     param_field = convert_param_field;
+
     sort_records(input_file_name, output_file_name, param_k, param_field);
     printf("\nEsecuzione avvenuta con successo\n");
     
@@ -138,11 +133,11 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     Record *records = read_file_input(input_file, &rows);
     fclose(input_file);
     clock_t time_end_read_file = clock();
-    printf("Read file end. Time lapsed: %fs\n", (double)(time_end_read_file - time_start_read_file) / CLOCKS_PER_SEC);
+    printf("Reading file end. Time lapsed: %fs\n", (double)(time_end_read_file - time_start_read_file) / CLOCKS_PER_SEC);
 
     //Algoritmo di ordinamento 
     printf("\nSorting file...\n");
-    clock_t time_start = clock();
+    clock_t time_start_sort_file = clock();
     if(field == 1){
         merge_binary_insertion_sort((void *) records, rows, sizeof(Record), k, compar_value_char);
     } else if(field == 2) {
@@ -150,8 +145,8 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     } else if (field == 3) {
         merge_binary_insertion_sort((void *) records, rows, sizeof(Record), k, compar_value_float);
     }
-    clock_t time_end = clock();
-    printf("Sorting end. Time lapsed: %fs\n", (double)(time_end - time_start) / CLOCKS_PER_SEC);
+    clock_t time_end_sort_file = clock();
+    printf("Sorting end. Time lapsed: %fs\n", (double)(time_end_sort_file - time_start_sort_file) / CLOCKS_PER_SEC);
 
     // Scrittura del file in output
     printf("\nWriting file...\n");
@@ -160,7 +155,7 @@ void sort_records(const char *infile, const char *outfile, size_t k, size_t fiel
     write_output_file(output_file, records, rows);
     fclose(output_file);
     clock_t time_end_write_file = clock();
-    printf("Write file end. Time lapsed: %fs\n", (double)(time_end_write_file - time_start_write_file) / CLOCKS_PER_SEC);
+    printf("Writing file end. Time lapsed: %fs\n", (double)(time_end_write_file - time_start_write_file) / CLOCKS_PER_SEC);
 
     free_memory(records, rows);
  }
