@@ -3,11 +3,10 @@
 
 #include "skip_list.h"
  
-// impostato valore in input per provare numero di nodi
 int random_level(size_t max_height) {
     int level = 1;
     double temp = (double)rand() / (double)RAND_MAX;
-    while (temp < 0.5 && level < max_height) { // modifica del valore senza define
+    while (temp < 0.5 && level < max_height) { 
         level += 1;
         temp = (double)rand() / (double)RAND_MAX;
     }
