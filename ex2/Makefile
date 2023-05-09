@@ -4,7 +4,7 @@ INCLUDES = src/*.h
 COMMON_DEPS = $(INCLUDES) Makefile
 dictfile = ./dictionary.txt
 textfile = ./correctme.txt
-max_height = 10
+max_height = 16
 
 
 all: skip_list skip_list_main
