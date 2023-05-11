@@ -35,15 +35,14 @@ void clear_skiplist(struct SkipList **list) {
     *list = NULL;
 }
 
-struct Node *createNode(void *item, int level) {
+void *createNode(void *item, int level) {
     struct Node *new_node = malloc(sizeof(struct Node));
     new_node->item = malloc(sizeof(char *));
     memcpy(new_node->item, item, sizeof(char *));
     new_node->next = calloc(sizeof(struct Node), level);
     new_node->size = level;
-    return new_node;
+    return (void *)new_node;
 }
-
 
 void insert_skiplist(struct SkipList *list, void *item) {
     struct Node *new = createNode(item, random_level(list->max_height));
@@ -51,15 +50,15 @@ void insert_skiplist(struct SkipList *list, void *item) {
         list->max_level = new->size;
     }
     struct Node *x = list->heads;
-    for(int k = list->max_level - 1; k >= 0; --k) {
+    for(int k = list->max_level - 1; k >= 0; k--) {
         if(x->next[k] == NULL || list->compare(item, x->next[k]->item) < 0) {
             if(k < new->size) {
-                ((new->next)[k]) = (x->next[k]);
-                ((x->next)[k]) = new;
+                new->next[k] = x->next[k];
+                x->next[k] = new;
             }
         }
         else {
-            x = ((x->next)[k]);
+            x = x->next[k];
             k++;
         }
     }
@@ -69,6 +68,7 @@ const void* search_skiplist(struct SkipList *list, void *item) {
     struct Node *x = list->heads;
     for(int i = list->max_level; i >= 0; i--) {
         while(x->next[i] != NULL && list->compare(x->next[i]->item, item) < 0) {
+            // elemento più grande avanzo nella lista
             x = x->next[i];
         }
     }
