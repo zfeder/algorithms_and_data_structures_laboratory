@@ -73,11 +73,8 @@ int main(int argc, char const *argv[]){
     const char *input_file_dictionary = (char *)argv[1];
     const char *input_file_correctme = (char *)argv[2];
     int param_max_height;
-    char *p_max_height;
-    /* 
-        argv[] è un puntatore a stringhe esecuzione della conversione da stringa a intero
-        con utilizzo della funzione strtol
-    */
+    char *p_max_height; 
+    //argv[] è un puntatore a stringhe esecuzione della conversione da stringa a intero con utilizzo della funzione strtol
     long convert_param_max_height = strtol(argv[3], &p_max_height, 10);
     param_max_height = convert_param_max_height;
     find_errors(input_file_dictionary, input_file_correctme, param_max_height);
