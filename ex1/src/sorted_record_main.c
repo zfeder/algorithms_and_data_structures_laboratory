@@ -111,12 +111,10 @@ int main(int argc, char const *argv[]) {
     // argv[] è un puntatore a stringhe esecuzione della conversione da stringa a intero con utilizzo della funzione strtol
     long convert_param_k = strtol(argv[3], &p_k, 10);
     param_k = convert_param_k;
-
     int param_field;
     char *p_field;
     long convert_param_field = strtol(argv[4], &p_field, 10);
     param_field = convert_param_field;
-
     sort_records(input_file_name, output_file_name, param_k, param_field);
     printf("\nEsecuzione avvenuta con successo\n");
     
