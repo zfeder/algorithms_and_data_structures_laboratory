@@ -3,7 +3,7 @@ CFLAGS =  -Wall
 INCLUDES = src/*.h
 COMMON_DEPS = $(INCLUDES) Makefile
 infile = ./records.csv
-outfile = ./sort_record_int.csv
+outfile = ./sort_record.csv
 k = 32
 field = 2
 
