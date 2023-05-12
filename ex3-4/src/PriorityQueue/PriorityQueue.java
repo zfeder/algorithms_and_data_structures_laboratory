@@ -1,24 +1,33 @@
 package PriorityQueue;
 
-import MinHeap.MinHeap;
-
+import java.util.ArrayList;
 import java.util.Comparator;
 
 public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> {
-    MinHeap<E> minHeap;
+    private ArrayList<E> heap;
+    private Comparator<E> comparator;
+    private int size;
 
     public PriorityQueue(Comparator<E> comparator) {
-        minHeap = new MinHeap<>(comparator);
+        heap = new ArrayList<>();
+        this.comparator = comparator;
+        size = 0;
     }
 
     @Override
     public boolean empty() {
-        return false;
+        return heap.isEmpty();
     }
 
     @Override
     public boolean push(E e) {
-        return false;
+        minHeap.insertItem(e);
+        return true;
+    }
+
+    @Override
+    public boolean contains(E e) {
+        return minHeap.contains(e);
     }
 
     @Override
@@ -29,5 +38,18 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
     @Override
     public void pop() {
 
+    }
+
+    @Override
+    public boolean remove(E e) {
+        return false;
+    }
+
+    public ArrayList<E> getHeap() {
+        return heap;
+    }
+
+    public int getSize() {
+        return size;
     }
 }
