@@ -122,7 +122,7 @@ Si rammenta, però, che il focus del laboratorio è l'implementazione di struttu
 Implementare una libreria che offre un algoritmo di ordinamento  *Merge-BinaryInsertion Sort* su dati generici, implementando il seguente prototipo di funzione:
 
 ```
-void merge_binary_insertion_sort(void *base, size_t nitems, size_t size, size_t k, int (*compar)(const void *, const void*));
+void merge_binary_insertion_sort(void *base, size_t nitems, size_t size, size_t k, int (*compar)(const void*, const void*));
 ```
 
 - `base` è un puntatore al primo elemento dell'array da ordinare;
@@ -136,7 +136,7 @@ Con *BinaryInsertion Sort* ci riferiamo a una versione dell'algoritmo *Insertion
 In alternativa, è anche ammissibile implementare il seguente prototipo meno generico, che ordina dati a patto che siano organizzati in un array di puntatori:
 
 ```
-void merge_binary_insertion_sort(void **base, size_t nitems, size_t k, int (*compar)(const void *, const void*));
+void merge_binary_insertion_sort(void **base, size_t nitems, size_t k, int (*compar)(const void*, const void*));
 ```
 
 - `base` è un puntatore al primo elemento dell'array di puntatori da ordinare sulla base dei valori riferiti;
@@ -168,14 +168,14 @@ Ogni record è descritto su una riga e contiene i seguenti campi:
 Il formato è un CSV standard: i campi sono separati da virgole; i record sono
 separati da `\n`.
 
-Usando l'algoritmo implementato precedentemente, si realizzi la seguente funzione per ordininare *record* contenuti nel file `records.csv` in ordine non decrescente secondo i valori contenuti nei tre campi "field".
+Usando l'algoritmo implementato precedentemente, si realizzi la seguente funzione per ordinare *record* contenuti nel file `records.csv` in ordine non decrescente secondo i valori contenuti nei tre campi "field".
 
 ```
-void sort_records(const char *infile, const char *outfile, size_t k, size_t field);
+void sort_records(FILE *infile, FILE *outfile, size_t k, size_t field);
 ```
 
-- `infile` è il percorso del file CSV contenente i record da ordinare;
-- `outfile` è un percorso nel quale salvare i record ordinati (che deve essere diverso da `infile`);
+- `infile` è il file contenente i record da ordinare;
+- `outfile` è il file nel quale salvare i record ordinati (che deve essere diverso da `infile`);
 - `k` è un parametro dell'algoritmo;
 - `field` può valere 1, 2 o 3 e indica quale dei tre campi deve essere usato per ordinare i record.
 
@@ -186,7 +186,7 @@ Si misurino i tempi di risposta variando il valore di `k`, per ciascuno dei tre 
 ### Condizioni per la consegna:
 
 - Creare una sottocartella chiamata `ex1` all'interno del repository.
-- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di `ex1/build` un file eseguibile chiamato `main_ex1`.
+- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di `ex1/bin` un file eseguibile chiamato `main_ex1`.
 - L'eseguibile `main_ex1` deve ricevere come parametri il percorso del file CSV contenente i record da ordinare, il percorso del file in cui salvare i record ordinati, il valore di `k` e il valore del campo `field` da utilizzare per l'ordinamento. Per esempio:
 
 ```
@@ -217,7 +217,7 @@ L'implementazione deve essere generica per quanto riguarda il tipo dei dati memo
 
 ```
 struct SkipList {
-  struct Node *head;
+  struct Node **heads;
   size_t max_level;
   size_t max_height;
   int (*compare)(const void*, const void*);
@@ -232,7 +232,7 @@ struct Node {
 
 Dove:
 
-- `head` è il primo nodo della *SkipList*;
+- `heads` sono i puntatori di inizio della *SkipList* per ogni livello fino a `max_height`;
 - `max_level` è il massimo numero di puntatori che **al momento ci sono** in un singolo nodo della *SkipList* (come si vede nella figura, ogni nodo può avere un numero distinto di puntatori);
 - `max_height` è una costante che definisce il massimo numero di puntatori che **possono esserci** in un singolo nodo della *SkipList*;
 - `compar` è il criterio secondo cui ordinare i dati (dati due puntatori a elementi);
@@ -243,7 +243,7 @@ Dove:
 La libreria deve implementare tutte le seguenti dichiarazioni.
 
 ```
-void new_skiplist(struct SkipList **list, size_t max_height, int (*compar)(const void *, const void*));
+void new_skiplist(struct SkipList **list, size_t max_height, int (*compar)(const void*, const void*));
 
 void clear_skiplist(struct SkipList **list);
 
@@ -261,7 +261,7 @@ La funzione deve allocare una nuova skiplist, data l'altezza massima e la funzio
 La funzione deve liberare correttamente tutta la memoria allocata per la *SkipList*, inclusi tutti i nodi interni e i dati in essi contenuti. L'utilizzo inteso di queste prime due funzioni è ad esempio:
 
 ```
-struct Skiplist* list = NULL;
+struct Skiplist *list = NULL;
 new_skiplist(&list, 10, compare);
 // ora list != NULL, posso usarla
 // per inserire elementi: insert_skiplist(list, ptr); 
@@ -275,32 +275,30 @@ clear_skiplist(&list);
 La funzione deve inserire un certo elemento `item` nella skiplist `list`. L'elemento da inserire viene fornito come puntatore ad un dato generico, la cui "responsabilità" viene passata alla skiplist (che quindi dovrà deallocarlo quando verrà deallocata la skiplist). Una possibile implementazione di questa funzione in pseudo-codice (da tradurre quindi in C) è la seguente:
 
 ```
-insertSkipList(list, item)
-
-    new = createNode(item, randomLevel())
-    if new->size > list->max_level
+insertSkipList(list, item):
+    new = createNode(item, randomLevel(list->max_height))
+    if new->size > list->max_level:
         list->max_level = new->size
 
-    x = list->head
-    for k = list->max_level downto 1 do
-        if (x->next[k] == NULL || item < x->next[k]->item)
-            if k < new->size {
-              new->next[k] = x->next[k]
-              x->next[k] = new
-            }
-        else
-            x = x->next[k]
+    x = list->heads
+    for k = list->max_level downto 1:
+        if x[k] == NULL or item < x[k]->item:
+            if k < new->size:
+              new->next[k] = x[k]
+              x[k] = new
+        else:
+            x = x[k]->next
             k++
 ```
 
 La funzione `randomLevel()` nel codice precedente determina il numero di puntatori da includere nel nuovo nodo e deve essere realizzata conformemente al seguente algoritmo. Spiegare il vantaggio di questo algoritmo nella relazione da consegnare con l'esercizio:
 
 ```
-randomLevel()
+randomLevel(max_height):
     lvl = 1
 
     // random() returns a random value in [0...1)
-    while random() < 0.5 and lvl < MAX_HEIGHT do
+    while random() < 0.5 and lvl < max_height:
         lvl = lvl + 1
     return lvl
 ```
@@ -310,18 +308,17 @@ randomLevel()
 La funzione deve verificare se un elemento con valore uguale ad  `item` è presente nella skiplist `list`; restituendo `NULL` se nessuna corrispondenza viene trovata, e restituendo il puntatore all'elemento `item` memorizzato nella skiplist altrimenti. Una possibile implementazione di questa funzione in pseudo-codice (da tradurre quindi in C) è la seguente:
 
 ```
-searchSkipList(list, item)
-    x = list->head
+searchSkipList(list, item):
+    x = list->heads
 
-    // loop invariant: x->item < item
-    for i = list->max_level downto 1 do
-        while x->next[i]->item < item do
-            x = x->next[i]
+    // loop invariant: x[i]->item <= item or item < first element of level i in list
+    for i = list->max_level downto 1:
+        while x[i]->next[i] != NULL and x[i]->next[i]->item <= item:
+            x = x[i]->next
 
-    // x->item < item <= x->next[1]->item
-    x = x->next[1]
-    if x->item == item then
-        return x->item
+    // loop end: x[1]->item <= item or item < first element in list
+    if x[1]->item == item then
+        return x[1]->item
     else
         return failure
 ```
@@ -342,10 +339,10 @@ Il dizionario contiene un elenco di parole. Le parole sono scritte di seguito, c
 
 Il file `correctme.txt` contiene un testo da correggere. Alcune parole in questo testo non ci sono nel dizionario.
 
-Si implementi una applicazione che usa la struttura dati `*SkipList*` per determinare in maniera efficiente la lista di parole nel testo da correggere non presenti nel dizionario dato come input al programma. L'applicazione deve implementare la seguente dichiarazione:
+Si implementi una applicazione che usa la struttura dati *SkipList* per determinare in maniera efficiente la lista di parole nel testo da correggere non presenti nel dizionario dato come input al programma. L'applicazione deve implementare la seguente dichiarazione:
 
 ```
-void find_errors(const char *dictfile, const char *textfile, size_t max_height);
+void find_errors(FILE *dictfile, FILE *textfile, size_t max_height);
 ```
 
 - `dictfile` è il percorso del file contenente le parole del dizionario;
@@ -360,17 +357,16 @@ Si sperimenti il funzionamento dell'applicazione considerando diversi valori per
 ### Condizioni per la consegna:
 
 - Creare una sottocartella chiamata `ex2` all'interno del repository.
-- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di `ex2/build` un file eseguibile chiamato `main_ex2`.
-- `main_ex2` deve ricevere come parametri il percorso del dizionario da usare come riferimento e il file da correggere, in quest'ordine. Il risultato va stampato a schermo, con le parole ordinate come nel file da correggere. Per esempio:
+- La consegna deve obbligatoriamente contenere un `Makefile`. Il `Makefile` deve produrre all'interno di `ex2/bin` un file eseguibile chiamato `main_ex2`.
+- `main_ex2` deve ricevere come parametri il percorso del dizionario da usare come riferimento, il file da correggere, e la massima altezza `max_height`, in quest'ordine. Il risultato va stampato a schermo, con le parole ordinate come nel file da correggere. Per esempio:
 
 ```
-$ ./main_ex2 /tmp/data/dictionary.txt /tmp/data/correctme.txt
+$ ./main_ex2 /tmp/data/dictionary.txt /tmp/data/correctme.txt 2
 cinqve
 perpeteva
 squola
 domandrono
 vuolessi
-scrissi
 corpito
 wita
 ```
@@ -383,18 +379,28 @@ wita
 
 Si implementi la struttura dati *coda con priorità (PriorityQueue)*.
 
-La struttura dati deve gestire tipi generici e consentire un numero qualunque e non noto a priori di elementi, implementando la seguente interfaccia:
+La struttura dati deve gestire tipi generici e consentire un numero qualunque e non noto a priori di elementi, implementando la seguente interfaccia (con requisiti minimi di complessità):
 
 ```
 public interface AbstractQueue<E> {
-  public boolean empty(); // controlla se la coda è vuota
-  public boolean push(E e); // aggiunge un elemento alla coda
-  public E top(); // accede all'elemento in cima alla coda
-  public void pop(); // rimuove l'elemento in cima alla coda
+  public boolean empty(); // controlla se la coda è vuota -- O(1)
+  public boolean push(E e); // aggiunge un elemento alla coda -- O(logN)
+  public boolean contains(E e); // controlla se un elemento è in coda -- O(1)
+  public E top(); // accede all'elemento in cima alla coda -- O(1)
+  public void pop(); // rimuove l'elemento in cima alla coda -- O(logN)
+  public boolean remove(E e); // rimuove un elemento se presente in coda -- O(logN)
 };
 ```
 
-La classe `PriorityQueue<E>` che implementa l'interfaccia dovrebbe avere almeno un costruttore che crea una coda vuota e prende come argomento un `Comparator<E>` da usare per confrontare gli elementi.
+*Suggerimento*: per implementare i metodi `contains` e `remove` potrebbe essere necessario usare una struttura dati di appoggio oltre allo heap (è ammesso usare strutture dati dalla libreria standard di Java se necessario).
+
+La classe concreta `PriorityQueue<E>` che implementa l'interfaccia dovrebbe avere almeno un costruttore che crea una coda vuota e prende come argomento un `Comparator<E>` da usare per confrontare gli elementi:
+
+```
+PriorityQueue(Comparator<E> comparator)
+```
+
+_Nota_: `Comparator` è un'[interfaccia base](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/Comparator.html) di Java.
 
 ### Unit Testing
 
@@ -410,37 +416,59 @@ Implementare gli unit-test degli algoritmi secondo le indicazioni suggerite nel 
 
 ### Testo
 
-Si implementi una libreria che realizza la struttura dati Grafo in modo che sia ottimale per dati sparsi
+Si implementi una libreria che realizza la struttura dati *Grafo* in modo che sia ottimale per dati sparsi
 (**attenzione**: le scelte implementative che farete dovranno essere giustificate in relazione alle nozioni presentate
 durante le lezioni in aula).
 
-La struttura deve consentire di rappresentare sia grafi diretti che grafi non diretti
-(*suggerimento*:  un grafo non diretto può essere rappresentato usando un'implementazione per grafi diretti modificata
-per garantire che, per ogni arco *(a,b)* etichettato *w*, presente nel grafo, sia presente nel grafo anche l'arco *(b,a)*
-etichettato *w*. Ovviamente, il grafo dovrà mantenere l'informazione che specifica se esso è un grafo diretto o non diretto.).
-
 L'implementazione deve essere generica sia per quanto riguarda il tipo dei nodi, sia per quanto riguarda le etichette
-degli archi.
-La struttura dati implementata dovrà offrire (almeno) le seguenti operazioni (accanto a ogni operazione è specificata la
-complessità richiesta; n può indicare il numero di nodi o il numero di archi, a seconda del contesto):
+degli archi, implementando la seguente interfaccia (con requisiti minimi di complessità; dove _N_ può indicare il numero di nodi o il numero di archi, a seconda del contesto):
 
-- Creazione di un grafo vuoto – O(1)
-- Aggiunta di un nodo – O(1)
-- Aggiunta di un arco – O(1)
-- Verifica se il grafo è diretto – O(1)
-- Verifica se il grafo contiene un dato nodo – O(1)
-- Verifica se il grafo contiene un dato arco – O(1)  _(*)_
-- Cancellazione di un nodo – O(n)
-- Cancellazione di un arco – O(1)  (*)
-- Determinazione del numero di nodi – O(1)
-- Determinazione del numero di archi – O(n)
-- Recupero dei nodi del grafo – O(n)
-- Recupero degli archi del grafo – O(n)
-- Recupero nodi adiacenti di un dato nodo – O(1)  _(*)_
-- Recupero etichetta associata a una coppia di nodi – O(1) _(*)_
-- Determinazione del peso del grafo (se il grafo non è pesato, il metodo può terminare con un errore)– O(n)
+```
+public interface AbstractGraph<V,L> {
+  public boolean isDirected(); // dice se il grafo è diretto o meno -- O(1)
+  public boolean isLabelled(); // dice se il grafo è etichettato o meno -- O(1)
+  public boolean addNode(V a); // aggiunge un nodo -- O(1)
+  public boolean addEdge(V a, V b, L l); // aggiunge un arco dati estremi ed etichetta -- O(1)
+  public boolean containsNode(V a); // controlla se un nodo è nel grafo -- O(1)
+  public boolean containsEdge(V a, V b); // controlla se un arco è nel grafo -- O(1) (*)
+  public boolean removeNode(V a); // rimuove un nodo dal grafo -- O(N)
+  public boolean removeEdge(V a, V b); // rimuove un arco dal grafo -- O(1) (*)
+  public int numNodes(); // numero di nodi -- O(1)
+  public int numEdges(); // numero di archi -- O(N)
+  public AbstractCollection<V> getNodes(); // recupero dei nodi del grafo -- O(N)
+  public AbstractCollection<AbstractEdge<V,L>> getEdges(); // recupero degli archi del grafo -- O(N)
+  public AbstractCollection<V> getNeighbours(V a); // recupero dei nodi adiacenti ad un dato nodo -- O(1) (*)
+  public L getLabel(V a, V b); // recupero dell'etichetta di un arco -- O(1) (*)
+};
+```
 
 _(*)_ quando il grafo è veramente sparso, assumendo che l'operazione venga effettuata su un nodo la cui lista di adiacenza ha una lunghezza in O(1).
+
+_Nota_: `AbstractCollection` è un'[interfaccia base](https://docs.oracle.com/en/java/javase/20/docs/api/java.base/java/util/AbstractCollection.html) di Java.
+
+L'interfaccia `AbstractGraph` si basa sulla seguente interfaccia per la rappresentazione di un arco:
+
+```
+public interface AbstractEdge<V,L> {
+  public V getStart(); // il nodo di partenza dell'arco
+  public V getEnd(); // il nodo di arrivo dell'arco
+  public L getLabel(); // l'etichetta dell'arco
+};
+```
+
+La classe concreta `Graph<V,L>` che implementa l'interfaccia `AbstractGraph` dovrebbe avere almeno un costruttore che crea un grafo vuoto in complessità O(1) e prende come argomenti due valori booleani per impostare se il grafo è da considerarsi diretto o meno, e se è da considerarsi etichettato o meno:
+
+```
+Graph(boolean directed, boolean labelled)
+```
+
+A seconda del valore di questi due parametri, cambierà il comportamento dei metodi per gestire gli archi per tutte le operazioni successive.
+
+*Suggerimento*:  un grafo non diretto può essere rappresentato usando un'implementazione per grafi diretti modificata
+per garantire che, per ogni arco *(a,b)* etichettato *w*, presente nel grafo, sia presente nel grafo anche l'arco *(b,a)*
+etichettato *w*. Ovviamente, il grafo dovrà mantenere l'informazione che specifica se esso è un grafo diretto o non diretto.
+Similmente, un grafo non etichettato può essere rappresentato usando l'implementazione per grafi etichettati modificata per garantire
+che le etichette siano sempre `null` (che invece non devono mai essere `null` per i grafi etichettati).
 
 ### Unit Testing
 
@@ -448,14 +476,15 @@ Implementare gli unit-test degli algoritmi secondo le indicazioni suggerite nel 
 
 ### Uso della libreria che implementa la struttura dati Grafo
 
-Si implementi l'algoritmo di Prim per la determinazione della minima foresta  ricoprente di un grafo, secondo il seguente template:
+Si implementi l'algoritmo di Prim per la determinazione della minima foresta ricoprente di un grafo, secondo il seguente template:
 
 ```
 public class Prim {
   public static void main(String[] args) {
     // leggi i dati CSV del grafo dal percorso in args[1] 
     // calcola la minima foresta ricoprente con l'algoritmo di Prim
-    // scrivi su standard output una descrizione della foresta calcolata come CSV  
+    // scrivi su standard output una descrizione della foresta calcolata come CSV con formato analogo a quello in input
+    // ai fini della correzione automatica, scrivere gli archi in output di modo che la partenza sia lessicograficamente minore della destinazione
   }
 }
 ```
@@ -476,7 +505,7 @@ Ogni record contiene i seguenti dati:
 **Note:**
 
 - Nel caso in cui il grafo sia costituito da una sola componente connessa, l'algoritmo restituirà un albero. Nel caso in cui, invece, vi siano più componenti connesse, l'algoritmo restituirà una foresta costituita dai minimi alberi ricoprenti di ciascuna componente connessa.
-- Potete intrepretare le informazioni presenti nelle righe del file come   archi **non diretti** (per cui probabilmente vorrete inserire nel vostro grafo sia l'arco di andata che quello di ritorno a fronte di ogni riga letta).
+- Potete intrepretare le informazioni presenti nelle righe del file come archi **non diretti** (per cui probabilmente vorrete inserire nel vostro grafo sia l'arco di andata che quello di ritorno a fronte di ogni riga letta).
 - Il file è stato creato a partire da un dataset poco accurato. I dati riportati contengono inesattezze e imprecisioni.
 - Un'implementazione corretta dell'algoritmo di Prim, eseguita sui dati contenuti nel file `italian_dist_graph.csv`, dovrebbe determinare una minima foresta ricoprente con 18.640 nodi, 18.637 archi (non orientati) e di peso complessivo di circa 89.939,913 Km.
 
