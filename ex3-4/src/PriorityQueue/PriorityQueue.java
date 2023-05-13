@@ -16,18 +16,18 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
 
     @Override
     public boolean empty() {
-        return heap.isEmpty();
+        return false;
     }
 
     @Override
     public boolean push(E e) {
-        minHeap.insertItem(e);
-        return true;
+        return false;
     }
 
     @Override
     public boolean contains(E e) {
-        return minHeap.contains(e);
+
+        return false;
     }
 
     @Override
@@ -51,5 +51,21 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
 
     public int getSize() {
         return size;
+    }
+
+    private int getParentIndexByChildIndex(int childIndex) {
+        if(childIndex % 2 == 0 && childIndex / 2 > 0) {
+            return (childIndex / 2) - 1;
+        } else {
+            return childIndex / 2;
+        }
+    }
+
+    private int getLeftChildIndex(int i) {
+        if(2 * i + 1 < size) {
+            return 2 * i + 1;
+        } else {
+            return i;
+        }
     }
 }
