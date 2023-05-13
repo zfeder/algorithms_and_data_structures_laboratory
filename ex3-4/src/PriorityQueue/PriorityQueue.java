@@ -16,18 +16,17 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
 
     @Override
     public boolean empty() {
-        return false;
+        return size == 0;
     }
 
     @Override
     public boolean push(E e) {
-        return false;
+        return true;
     }
 
     @Override
     public boolean contains(E e) {
-
-        return false;
+        return heap.contains(e);
     }
 
     @Override
@@ -53,6 +52,11 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
         return size;
     }
 
+    /**
+     * Restituisce l'indice del padre, dato un indice
+     * @param childIndex
+     * @return
+     */
     private int getParentIndexByChildIndex(int childIndex) {
         if(childIndex % 2 == 0 && childIndex / 2 > 0) {
             return (childIndex / 2) - 1;
@@ -61,6 +65,11 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
         }
     }
 
+    /**
+     * Restituisce l'indice di un figlio sinistro, dato l'indice del padre
+     * @param i
+     * @return
+     */
     private int getLeftChildIndex(int i) {
         if(2 * i + 1 < size) {
             return 2 * i + 1;
@@ -68,4 +77,42 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
             return i;
         }
     }
+
+    /**
+     * Restituisce l'indice di un figlio destro, dato l'indice del padre
+     * @param i
+     * @return
+     */
+    private int getRightChildIndex(int i) {
+        if(2 * i + 2 < size) {
+            return 2 * i + 2;
+        } else {
+            return i;
+        }
+    }
+
+    /**
+     * Restituisce il padre dato l'indice di un figlio
+     * @param childIndex
+     * @return
+     */
+    public E getParentByChildIndex(int childIndex) {
+        return heap.get(getParentIndexByChildIndex(childIndex));
+    }
+
+    public E getLeftChildByParentIndex(int parentIndex) {
+        return heap.get(getLeftChildIndex(parentIndex));
+    }
+
+    public E getRightChildByParentIndex(int parentIndex) {
+        return heap.get(getRightChildIndex(parentIndex));
+    }
+
+
+
+
+
+
+
+
 }
