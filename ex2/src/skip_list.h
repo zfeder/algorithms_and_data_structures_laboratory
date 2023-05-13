@@ -14,7 +14,7 @@ struct Node;
  * @param compare è il criterio secondo cui ordinare i dati
  */
 struct SkipList {
-  struct Node *heads;
+  struct Node **heads;
   size_t max_level;
   size_t max_height;
   int (*compare)(const void*, const void*);
