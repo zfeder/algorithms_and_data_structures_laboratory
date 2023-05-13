@@ -30,13 +30,13 @@ void setUp(void) {
 static void test_insert_one_value_int(void) {
     new_skiplist(&list, 10, string_compar_test);
     insert_skiplist(list, &i1);
-    TEST_ASSERT_EQUAL_INT(*((int *)list->heads->next[0]->item), i1);
+    TEST_ASSERT_EQUAL_INT(*((int *)list->heads[0]->item), i1);
 }
 
 static void test_insert_one_value_char(void) {
     new_skiplist(&list, 10, string_compar_test);
     insert_skiplist(list, &c1);
-    TEST_ASSERT_EQUAL_INT(*((char *)list->heads->next[0]->item), c1);
+    TEST_ASSERT_EQUAL_INT(*((char *)list->heads[0]->item), c1);
 }
 
 static void test_search_value_int(void) {
