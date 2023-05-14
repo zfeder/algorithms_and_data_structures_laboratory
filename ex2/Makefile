@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS =  -Wall 
+CFLAGS = -Wall 
 INCLUDES = src/*.h
 COMMON_DEPS = $(INCLUDES) Makefile
 dictfile = ./dictionary.txt
