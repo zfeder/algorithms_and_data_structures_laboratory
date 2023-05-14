@@ -14,17 +14,6 @@ int random_level(size_t max_height) {
 }
 
 void new_skiplist(struct SkipList **list, size_t max_height, int (*compar)(const void *, const void*)) {
-    /*
-    struct SkipList *new_skip_list = (struct SkipList *) malloc(sizeof(struct SkipList));
-    *list = new_skip_list;
-    new_skip_list->max_level = 0;
-    new_skip_list->heads = malloc(sizeof(struct Node **));
-    new_skip_list->heads = (struct Node **)calloc(max_height, sizeof(struct Node *));
-    new_skip_list->compare = compar;
-    new_skip_list->max_height = max_height;
-    printf("skiplist creata\n");
-    */
-    //new_skip_list->heads[0]->next = calloc(sizeof(struct Node), max_height);
     *list = (struct SkipList *)calloc(1, sizeof(struct SkipList));
     (*list)->heads = (struct Node **)calloc(max_height, sizeof(struct Node *));
     (*list)->max_height = max_height;
@@ -44,10 +33,11 @@ void clear_skiplist(struct SkipList **list) {
     *list = NULL;
 }
 
+
 void *createNode(void *item, int level) {
     struct Node *new = (struct Node *)calloc(1, sizeof(struct Node));
-    new->item = malloc(sizeof(char *));
-    memcpy(new->item, item, sizeof(char *));
+    new->item = malloc(sizeof(double *));
+    memcpy(new->item, item, sizeof(double *));
     new->next = (struct Node **)calloc(level, sizeof(struct Node *));
     new->size = level;
     return (void *)new;
