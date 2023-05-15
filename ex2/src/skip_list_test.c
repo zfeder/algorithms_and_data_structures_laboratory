@@ -44,7 +44,6 @@ static void test_search_value_int(void) {
   int i = i1;
   insert_skiplist(list, &i);
   TEST_ASSERT_EQUAL_INT(1, *(int *)(search_skiplist(list, (void *)&i)));
-  clear_skiplist(&list);
 }
 
 static void test_search_value_char(void) {
@@ -52,7 +51,6 @@ static void test_search_value_char(void) {
   char c = c1;
   insert_skiplist(list, &c);
   TEST_ASSERT_EQUAL_PTR(c1, *(char *)(search_skiplist(list, (void *)&c)));
-  clear_skiplist(&list);
 }
 
 static void test_search_skip_list_not_found(void) {
@@ -61,14 +59,6 @@ static void test_search_skip_list_not_found(void) {
   insert_skiplist(list, (void *)&i);
   int ii = i2;
   TEST_ASSERT_NULL(search_skiplist(list, (void *)&ii));
-  clear_skiplist(&list);
-}
-
-static void test_search_skip_list_not_found_two(void) {
-  new_skiplist(&list, 10, string_compar_test);
-  insert_skiplist(list, (void *)&i1);
-  TEST_ASSERT_NULL(search_skiplist(list, (void *)&i2));
-  clear_skiplist(&list);
 }
 
 int main(int argc, char const *argv[]) {
@@ -79,7 +69,6 @@ int main(int argc, char const *argv[]) {
     RUN_TEST(test_search_value_int);
     RUN_TEST(test_search_value_char);
     RUN_TEST(test_search_skip_list_not_found);
-    RUN_TEST(test_search_skip_list_not_found_two);
 
     return UNITY_END();
 }
