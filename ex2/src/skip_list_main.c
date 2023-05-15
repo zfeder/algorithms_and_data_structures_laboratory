@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 #include "skip_list.h"
 
@@ -119,29 +120,43 @@ FILE *open_file(const char *file_name, char *mode) {
 }
 
 void read_file_input(struct SkipList *list, FILE *input_file) {
-    char *buffer = malloc(ROW_LENGTH);
-    while (fgets(buffer, ROW_LENGTH, input_file)) {
-        buffer[strcspn(buffer, "\n")] = 0;
-        insert_skiplist(list, (void *)buffer);
+    char *input = (char *)malloc(ROW_LENGTH);
+    char *insert_list;
+    while(fscanf(input_file, "%s", input) != EOF) {
+        insert_list = strcpy((char *) malloc(strlen(input) + 1), input);
+        insert_skiplist(list, insert_list);
+    }
+}
+
+void buf_flush(char *buf, int size){
+    for(int i = 0; i < size; i++) {
+        buf[i]='\0';
     }
 }
 
 void search_from_file(struct SkipList *list, FILE *input_file) {
-    fseek(input_file, 0, SEEK_END);
-    size_t file_size = ftell(input_file);
-    rewind(input_file);
-    char *file_content = malloc(file_size);
-    fread(file_content, 1, file_size, input_file);
-    char *word = strtok(file_content, " ,.;:\n");
-    while (word != NULL) {
-        if (search_skiplist(list, (void *)word) == NULL) {
-            printf("%s\n", word);
+    char c;
+    char *buffer = malloc(ROW_LENGTH);
+    int i = 0;
+    int flag = 0;
+    while ((c = fgetc(input_file)) != EOF) {
+        if (isalpha(c) > 0) {
+            // Aggiungo il carattere al buffer
+            buffer[i] = c;
+            i++;
+            flag = 1;
+        } else if(flag){
+            buffer[i] = '\0';  // Termina il buffer con il carattere di fine stringa '\0'
+            if(search_skiplist(list, buffer) == NULL) {
+                printf("%s\n", buffer);
+            }
+            i = 0;  // Reimposta l'indice del buffer a 0 
+            flag = 0;
         }
-    word = strtok(NULL, " ,.;:\n");
     }
-    
-    free(file_content);
+    free(buffer);  // Dealloca la memoria del buffer
 }
+
 
 int check_args(int argc, char const *argv[]) {
   if (strcmp(argv[1], "--help") == 0) {
