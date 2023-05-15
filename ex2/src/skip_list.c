@@ -36,8 +36,7 @@ void clear_skiplist(struct SkipList **list) {
 
 void *createNode(void *item, int level) {
     struct Node *new = (struct Node *)calloc(1, sizeof(struct Node));
-    new->item = malloc(sizeof(double *));
-    memcpy(new->item, item, sizeof(double *));
+    new->item = item;
     new->next = (struct Node **)calloc(level, sizeof(struct Node *));
     new->size = level;
     return (void *)new;
