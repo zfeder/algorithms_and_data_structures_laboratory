@@ -2,6 +2,7 @@
 out/
 !**/src/main/**/out/
 !**/src/test/**/out/
+/src/PriorityQueue/PriorityQueueMain.java
 
 ### Mac OS ###
 .DS_Store
