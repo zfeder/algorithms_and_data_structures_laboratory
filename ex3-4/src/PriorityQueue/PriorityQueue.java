@@ -8,67 +8,64 @@ import java.util.Comparator;
  * @author Federico Filì
  */
 public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> {
-    private ArrayList<E> heap;
+    private ArrayList<E> priorityQueue;
     private final Comparator<E> comparator;
-    private int size;
 
     public PriorityQueue(Comparator<E> comparator) {
-        heap = new ArrayList<>();
+        priorityQueue = new ArrayList<>();
         this.comparator = comparator;
-        size = 0;
     }
 
     @Override
     public boolean empty() {
-        return size == 0;
+        return getSize() == 0;
     }
 
     @Override
     public boolean push(E e) {
-        int i = size;
-        heap.add(i, e);
-        while(size > 0 && comparator.compare(heap.get(i), heap.get(getParentIndexByChildIndex(i))) < 0) {
-            E temp = heap.get(i);
-            heap.set(i, heap.get(getParentIndexByChildIndex(i)));
-            heap.set(getParentIndexByChildIndex(i), temp);
-            i = getParentIndexByChildIndex(i);
+        if(contains(e)) {
+            return false;
         }
-        size++;
-        return heap.contains(e);
+        priorityQueue.add(e);
+        int index = priorityQueue.size() - 1;
+        int parentIndex = getParentIndexByChildIndex(index);
+        while(parentIndex != index && comparator.compare(priorityQueue.get(index), priorityQueue.get(parentIndex)) < 0) {
+            swapValue(index, parentIndex);
+            index = parentIndex;
+            parentIndex = getParentIndexByChildIndex(index);
+        }
+        return priorityQueue.contains(e);
     }
 
     @Override
     public boolean contains(E e) {
-        return heap.contains(e);
+        return priorityQueue.contains(e);
     }
 
     @Override
     public E top() {
-        if(size > 0) {
-            return heap.get(0);
-        } else {
-            return null;
-        }
+        return priorityQueue.get(0);
     }
 
     @Override
     public void pop() {
-        if(size > 0) {
-            // imposto come primo valore l'ultimo elemento dell'heap
-            heap.set(0, heap.get(size - 1));
-            // funzione heapify
-            heapify(0);
-            size--;
-        }
+        E lastItem = priorityQueue.get(getSize() - 1);
+        priorityQueue.set(0, lastItem);
+        priorityQueue.remove(getSize() - 1);
+        heapify(0);
     }
 
     @Override
     public boolean remove(E e) {
-        // controllo che l'elemento è presente nell'heap
-        if(heap.contains(e)) {
-            // rimuovo l'elemento
-            heap.remove(e);
-            size--;
+        if(getSize() == 0) {
+            return false;
+        }
+        if(priorityQueue.contains(e)) {
+            int index = priorityQueue.indexOf(e);
+            E lastItem = priorityQueue.get(getSize() - 1);
+            priorityQueue.set(index, lastItem);
+            priorityQueue.remove(getSize() - 1);
+            heapify(index);
             return true;
         } else {
             return false;
@@ -76,11 +73,15 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
     }
 
     public ArrayList<E> getHeap() {
-        return heap;
+        return priorityQueue;
     }
 
+    /**
+     * Ristituisce la dimensione dell'heap
+     * @return dimensione dell'heap
+     */
     public int getSize() {
-        return size;
+        return priorityQueue.size();
     }
 
     /**
@@ -89,8 +90,10 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
      * @return indice del padre
      */
     private int getParentIndexByChildIndex(int childIndex) {
-        if(childIndex % 2 == 0 && childIndex / 2 > 0) {
-            return (childIndex / 2) - 1;
+        if(childIndex == 0){
+            return 0;
+        } else if(childIndex % 2 == 0 && childIndex / 2 > 0){
+            return (childIndex - 1) / 2;
         } else {
             return childIndex / 2;
         }
@@ -102,10 +105,10 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
      * @return indice del figlio sinistro
      */
     private int getLeftChildIndex(int i) {
-        if(2 * i + 1 < size) {
-            return 2 * i + 1;
+        if(2 * i + 1 < getSize()) {
+            return (2 * i + 1);
         } else {
-            return i; // indice del padre
+            return i;
         }
     }
 
@@ -115,10 +118,10 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
      * @return indice del figlio destro
      */
     private int getRightChildIndex(int i) {
-        if(2 * i + 2 < size) {
-            return 2 * i + 2;
+        if (2 * i + 2 < getSize()) {
+            return (2 * i + 2);
         } else {
-            return i; // indice del padre
+            return i;
         }
     }
 
@@ -128,7 +131,7 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
      * @return il padre dell'indice del figlio
      */
     public E getParentByChildIndex(int childIndex) {
-        return heap.get(getParentIndexByChildIndex(childIndex));
+        return priorityQueue.get(getParentIndexByChildIndex(childIndex));
     }
 
     /**
@@ -137,7 +140,7 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
      * @return figli di sinistra
      */
     public E getLeftChildByParentIndex(int parentIndex) {
-        return heap.get(getLeftChildIndex(parentIndex));
+        return priorityQueue.get(getLeftChildIndex(parentIndex));
     }
 
     /**
@@ -146,54 +149,50 @@ public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> 
      * @return figli di destra
      */
     public E getRightChildByParentIndex(int parentIndex) {
-        return heap.get(getRightChildIndex(parentIndex));
+        return priorityQueue.get(getRightChildIndex(parentIndex));
     }
 
     /**
-     * Restituisce l'indice dell'elemento più piccolo, dati tre indici
-     * @param val1 indice del padre
-     * @param val2 indice del figlio di sinistra
-     * @param val3 indice del figlio di destra
-     * @return valore minimo tra i tre indici
+     * Verifica che l'indice index in input è il valore minimo dell'heap, in caso
+     * contrario scambio il valore con il minimo e richiama heapify risorsivamente
+     * @param index indice
      */
-    private int minValue(int val1, int val2, int val3) {
-        int minIndex = 0;
-        if(comparator.compare(heap.get(val1), heap.get(val2)) < 0) {
-            if(comparator.compare(heap.get(val3), heap.get(val1)) < 0) {
-                minIndex = val3;
-            } else {
-                minIndex = val1;
-            }
-        } else {
-            if(comparator.compare(heap.get(val2), heap.get(val3)) < 0) {
-                minIndex = val2;
-            } else {
-                minIndex = val3;
-            }
+    public void heapify(int index) {
+        int leftIndex = getLeftChildIndex(index);
+        int rightIndex = getRightChildIndex(index);
+        int minValue = index;
+        if(leftIndex < getSize() && comparator.compare(priorityQueue.get(leftIndex), priorityQueue.get(index)) < 0) {
+            minValue = leftIndex;
         }
-        return minIndex;
+        if(rightIndex < getSize() && comparator.compare(priorityQueue.get(rightIndex), priorityQueue.get(minValue)) < 0) {
+            minValue = rightIndex;
+        }
+        if(minValue != index) {
+            swapValue(index, minValue);
+            heapify(minValue);
+        }
     }
 
     /**
-     * Verifica che l'indice i in input deve essere il valore minimo dell'heap, e in caso
-     * contrario deve essere scambiato con il valore minimo e successivamente viene
-     * nuovamente chiamato heapify in modo ricorsivo
-     * @param i indice del nodo
+     *
+     * @param index
+     * @param parent
      */
-    private void heapify(int i) {
-        // imposto di una funzione di confronto tra valori minimi
-        int m = minValue(i, getLeftChildIndex(i), getRightChildIndex(i));
-        if(m != i) {
-            E temp = heap.get(m);
-            heap.set(m, heap.get(i));
-            heap.set(i, temp);
-            heapify(m);
-        }
+    private void swapValue(int index, int parent) {
+        E tempValue = priorityQueue.get(parent);
+        priorityQueue.set(parent, priorityQueue.get(index));
+        priorityQueue.set(index, tempValue);
     }
 
-
-
-
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("SIZE = " + getSize() + " ");
+        for (int i = 0; i < getSize(); i++) {
+            sb.append("[" + priorityQueue.get(i) + "]");
+        }
+        return sb.toString();
+    }
 
 
 
