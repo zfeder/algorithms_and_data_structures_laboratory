@@ -7,7 +7,7 @@ import java.util.Comparator;
  * Implementazione di una Coda di Priorità
  * @author Federico Filì
  */
-public class PriorityQueue<E extends Comparable<E>> implements AbstractQueue<E> {
+public class PriorityQueue<E> implements AbstractQueue<E> {
     private ArrayList<E> priorityQueue;
     private final Comparator<E> comparator;
 
