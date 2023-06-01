@@ -2,6 +2,7 @@ package PriorityQueue;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 /**
  * Implementazione di una Coda di Priorità
@@ -10,9 +11,11 @@ import java.util.Comparator;
 public class PriorityQueue<E> implements AbstractQueue<E> {
     private ArrayList<E> priorityQueue;
     private final Comparator<E> comparator;
+    private HashMap<E, Integer> hashMap;
 
     public PriorityQueue(Comparator<E> comparator) {
         priorityQueue = new ArrayList<>();
+        hashMap = new HashMap<>();
         this.comparator = comparator;
     }
 
@@ -23,54 +26,76 @@ public class PriorityQueue<E> implements AbstractQueue<E> {
 
     @Override
     public boolean push(E e) {
-        if(contains(e)) {
+        if(hashMap.containsKey(e)) {
             return false;
         }
         priorityQueue.add(e);
+        hashMap.put(e, priorityQueue.size() - 1);
         int index = priorityQueue.size() - 1;
         int parentIndex = getParentIndexByChildIndex(index);
         while(parentIndex != index && comparator.compare(priorityQueue.get(index), priorityQueue.get(parentIndex)) < 0) {
-            swapValue(index, parentIndex);
+            swap(index, parentIndex);
             index = parentIndex;
             parentIndex = getParentIndexByChildIndex(index);
         }
-        return priorityQueue.contains(e);
+        return true;
     }
 
     @Override
     public boolean contains(E e) {
-        return priorityQueue.contains(e);
+        return hashMap.containsKey(e);
     }
 
     @Override
     public E top() {
-        return priorityQueue.get(0);
+        if(getSize() != 0) {
+            return priorityQueue.get(0);
+        }
+        return null;
     }
 
     @Override
     public void pop() {
-        E lastItem = priorityQueue.get(getSize() - 1);
-        priorityQueue.set(0, lastItem);
+        if(getSize() == 0) {
+            return;
+        }
+        E firstValue = priorityQueue.get(0);
+        swap(0, getSize() - 1);
+        hashMap.remove(firstValue);
         priorityQueue.remove(getSize() - 1);
-        heapify(0);
+        fixHeap(0);
+
     }
 
-    @Override
     public boolean remove(E e) {
         if(getSize() == 0) {
             return false;
         }
-        if(priorityQueue.contains(e)) {
-            int index = priorityQueue.indexOf(e);
-            E lastItem = priorityQueue.get(getSize() - 1);
-            priorityQueue.set(index, lastItem);
+        if(hashMap.containsKey(e)) {
+            int index = hashMap.get(e);
+            if(index == getSize() - 1){
+                priorityQueue.remove(getSize() - 1);
+                hashMap.remove(e);
+                return true;
+            }
+            swap(index, getSize() - 1);
             priorityQueue.remove(getSize() - 1);
-            heapify(index);
+            hashMap.remove(e);
+            int parentIndex = getParentIndexByChildIndex(index);
+            while(index > 0 && comparator.compare(priorityQueue.get(index), priorityQueue.get(parentIndex)) < 0) {
+                swap(index, parentIndex);
+                index = parentIndex;
+                parentIndex = getParentIndexByChildIndex(index);
+
+            }
+            fixHeap(index);
             return true;
         } else {
             return false;
         }
     }
+
+
 
     public ArrayList<E> getHeap() {
         return priorityQueue;
@@ -95,7 +120,7 @@ public class PriorityQueue<E> implements AbstractQueue<E> {
         } else if(childIndex % 2 == 0 && childIndex / 2 > 0){
             return (childIndex - 1) / 2;
         } else {
-            return childIndex / 2;
+            return (childIndex - 1) / 2;
         }
     }
 
@@ -157,7 +182,7 @@ public class PriorityQueue<E> implements AbstractQueue<E> {
      * contrario scambio il valore con il minimo e richiama heapify risorsivamente
      * @param index indice
      */
-    public void heapify(int index) {
+    public void fixHeap(int index) {
         int leftIndex = getLeftChildIndex(index);
         int rightIndex = getRightChildIndex(index);
         int minValue = index;
@@ -168,20 +193,20 @@ public class PriorityQueue<E> implements AbstractQueue<E> {
             minValue = rightIndex;
         }
         if(minValue != index) {
-            swapValue(index, minValue);
-            heapify(minValue);
+            swap(index, minValue);
+            fixHeap(minValue);
         }
     }
 
-    /**
-     *
-     * @param index
-     * @param parent
-     */
-    private void swapValue(int index, int parent) {
-        E tempValue = priorityQueue.get(parent);
-        priorityQueue.set(parent, priorityQueue.get(index));
+    private void swap(int index, int min) {
+        E tempValue = priorityQueue.get(min);
+        E tempValue2 = priorityQueue.get(index);
+        priorityQueue.set(min, tempValue2);
         priorityQueue.set(index, tempValue);
+        hashMap.put(tempValue, index);
+        hashMap.put(tempValue2, min);
+
+
     }
 
     @Override
