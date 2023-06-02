@@ -34,21 +34,57 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
 
     @Override
     public boolean addNode(V a) {
-        return false;
+        if (adjacentList.containsKey(a)) {
+            return false;
+        }
+
+        adjacentList.put(a, new HashSet<>());
+        return true;
     }
 
     @Override
     public boolean addEdge(V a, V b, L l) {
-        return false;
+        if (!adjacentList.containsKey(a) || !adjacentList.containsKey(b)) {
+            return false;
+        }
+
+        Set<Edge<V, L>> edges = adjacentList.get(a);
+
+        // Check if the edge already exists
+        for (Edge<V, L> edge : edges) {
+            if (edge.getEnd().equals(b)) {
+                return false;
+            }
+        }
+
+        Edge<V, L> newEdge = new Edge<>(a, b, l);
+        edges.add(newEdge);
+
+        if (!directed) {
+            Edge<V, L> reverseEdge = new Edge<>(b, a, l);
+            adjacentList.get(b).add(reverseEdge);
+        }
+
+        return true;
     }
 
     @Override
     public boolean containsNode(V a) {
-        return false;
+        return adjacentList.containsKey(a);
     }
 
     @Override
     public boolean containsEdge(V a, V b) {
+        if (!adjacentList.containsKey(a) || !adjacentList.containsKey(b)) {
+            return false;
+        }
+
+        for (Edge<V, L> edge : adjacentList.get(a)) {
+            if (edge.getEnd().equals(b)) {
+                return true;
+            }
+        }
+
         return false;
     }
 
