@@ -9,9 +9,9 @@ import java.util.HashMap;
  * @author Federico Filì
  */
 public class PriorityQueue<E> implements AbstractQueue<E> {
-    private ArrayList<E> priorityQueue;
+    private final ArrayList<E> priorityQueue;
     private final Comparator<E> comparator;
-    private HashMap<E, Integer> hashMap;
+    private final HashMap<E, Integer> hashMap;
 
     public PriorityQueue(Comparator<E> comparator) {
         priorityQueue = new ArrayList<>();
@@ -212,9 +212,9 @@ public class PriorityQueue<E> implements AbstractQueue<E> {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("SIZE = " + getSize() + " ");
+        sb.append("SIZE = ").append(getSize()).append(" ");
         for (int i = 0; i < getSize(); i++) {
-            sb.append("[" + priorityQueue.get(i) + "]");
+            sb.append("[").append(priorityQueue.get(i)).append("]");
         }
         return sb.toString();
     }
