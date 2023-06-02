@@ -90,27 +90,59 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
 
     @Override
     public boolean removeNode(V a) {
-        return false;
+        if (!adjacentList.containsKey(a)) {
+            return false;
+        }
+
+        adjacentList.remove(a);
+
+        for (Set<Edge<V, L>> edges : adjacentList.values()) {
+            edges.removeIf(edge -> edge.getEnd().equals(a));
+        }
+
+        return true;
     }
 
     @Override
     public boolean removeEdge(V a, V b) {
-        return false;
+        if (!adjacentList.containsKey(a) || !adjacentList.containsKey(b)) {
+            return false;
+        }
+
+        Set<Edge<V, L>> edges = adjacentList.get(a);
+        boolean removed = edges.removeIf(edge -> edge.getEnd().equals(b));
+
+        if (removed && !directed) {
+            edges = adjacentList.get(b);
+            edges.removeIf(edge -> edge.getEnd().equals(a));
+        }
+
+        return removed;
     }
 
     @Override
     public int numNodes() {
-        return 0;
+        return adjacentList.size();
     }
 
     @Override
     public int numEdges() {
-        return 0;
+        int count = 0;
+
+        for (Set<Edge<V, L>> edges : adjacentList.values()) {
+            count += edges.size();
+        }
+
+        if (!directed) {
+            count /= 2;
+        }
+
+        return count;
     }
 
     @Override
     public Collection<V> getNodes() {
-        return null;
+        return adjacentList.keySet();
     }
 
     @Override
