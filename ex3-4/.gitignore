@@ -3,6 +3,8 @@ out/
 !**/src/main/**/out/
 !**/src/test/**/out/
 /src/PriorityQueue/PriorityQueueMain.java
+/src/AbstractGraph/italian_dist_graph.csv
+/src/AbstractGraph/output.csv
 
 ### Mac OS ###
 .DS_Store
