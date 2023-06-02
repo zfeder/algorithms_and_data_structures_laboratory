@@ -2,6 +2,10 @@ package AbstractGraph;
 
 import java.util.*;
 
+/**
+ * Implementazione di un Grafo
+ * @author Federico Filì
+ */
 public class Graph<V, L> implements AbstractGraph<V, L> {
 
     /**
