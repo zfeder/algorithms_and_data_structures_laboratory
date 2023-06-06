@@ -53,4 +53,9 @@ public class Edge<V, L> implements AbstractEdge<V, L> {
     public L getLabel() {
         return label;
     }
+
+    @Override
+    public String toString() {
+        return "(" + getStart() + " - " + getEnd() + ", " + getLabel() + ")";
+    }
 }
