@@ -88,20 +88,21 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         if (!adjacentList.containsKey(a) || !adjacentList.containsKey(b)) {
             return false;
         }
-        Set<Edge<V, L>> edges = adjacentList.get(a);
+        Set<Edge<V, L>> edgesA = adjacentList.get(a);
+        Set<Edge<V, L>> edgesB = adjacentList.get(b);
 
         // Controlla se esiste un arco che collega il nodo a e il nodo b
-        for (Edge<V, L> edge : edges) {
+        for (Edge<V, L> edge : edgesA) {
             if (edge.getEnd().equals(b)) {
                 return false;
             }
         }
         Edge<V, L> newEdge = new Edge<>(a, b, l);
-        edges.add(newEdge);
+        edgesA.add(newEdge);
         if (!directed) {
             // Crea un arco dal nodo b al nodo a
             Edge<V, L> reverseEdge = new Edge<>(b, a, l);
-            adjacentList.get(b).add(reverseEdge);
+            edgesB.add(reverseEdge);
         }
         return true;
     }
