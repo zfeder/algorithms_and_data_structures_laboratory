@@ -99,6 +99,7 @@ public class Graph<V, L> implements AbstractGraph<V, L> {
         Edge<V, L> newEdge = new Edge<>(a, b, l);
         edges.add(newEdge);
         if (!directed) {
+            // Crea un arco dal nodo b al nodo a
             Edge<V, L> reverseEdge = new Edge<>(b, a, l);
             adjacentList.get(b).add(reverseEdge);
         }
