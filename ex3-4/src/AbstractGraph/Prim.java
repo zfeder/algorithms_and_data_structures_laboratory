@@ -25,7 +25,7 @@ public class Prim {
             return null;
 
         // minimumForest rappresenta la foresta di copertura minima
-        Graph<V, L> minimumForest = new Graph<V, L>(false, true);
+        Graph<V, L> minimumForest = new Graph<V, L>(graph.isDirected(), graph.isLabelled());
 
         // nodeVisited per tenere traccia dei nodi visitati
         HashSet<V> nodeVisited = new HashSet<>();
