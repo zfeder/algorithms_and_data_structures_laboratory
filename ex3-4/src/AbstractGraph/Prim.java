@@ -95,9 +95,8 @@ public class Prim {
 
     public static void main(String[] args) {
         Graph<String, Double> graph = new Graph<String, Double>(false, true);
-        File file = new File("/Users/feder/Desktop/laboratorio-algoritmi-2022-2023/ex3-4/src/AbstractGraph/italian_dist_graph.csv");
         try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
+            BufferedReader br = new BufferedReader(new FileReader(args[0]));
             String line;
             while ((line = br.readLine()) != null) {
                 String[] split = line.split(",");
@@ -136,10 +135,8 @@ public class Prim {
         System.out.println("**************************************************\n");
         try {
             List<AbstractEdge<String, Double>> sortedPrim = new ArrayList<>(prim);
-
             Collections.sort(sortedPrim, (e1, e2) -> e1.toString().compareTo(e2.toString()));
-
-            String fileOutput = "/Users/feder/Desktop/laboratorio-algoritmi-2022-2023/ex3-4/src/AbstractGraph/output.csv";
+            String fileOutput = args[1];
             FileWriter outputWriter = new FileWriter(fileOutput);
             for (AbstractEdge<String, Double> e : sortedPrim) {
                 outputWriter.write(e.toString() + "\n");
