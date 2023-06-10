@@ -5,7 +5,7 @@ COMMON_DEPS = $(INCLUDES) Makefile
 infile = ./records.csv
 outfile = ./sort_record.csv
 k = 32
-field = 2
+field = 1
 
 all: sorted_record sorted_record_main sorted_record_test
 tester: sorted_record sorted_record_test 
